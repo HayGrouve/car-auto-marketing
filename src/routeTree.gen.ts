@@ -9,8 +9,26 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as RemontiRouteImport } from './routes/remonti'
+import { Route as KontaktiRouteImport } from './routes/kontakti'
+import { Route as GtpRouteImport } from './routes/gtp'
 import { Route as IndexRouteImport } from './routes/index'
 
+const RemontiRoute = RemontiRouteImport.update({
+  id: '/remonti',
+  path: '/remonti',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KontaktiRoute = KontaktiRouteImport.update({
+  id: '/kontakti',
+  path: '/kontakti',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GtpRoute = GtpRouteImport.update({
+  id: '/gtp',
+  path: '/gtp',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -19,28 +37,61 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/gtp': typeof GtpRoute
+  '/kontakti': typeof KontaktiRoute
+  '/remonti': typeof RemontiRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/gtp': typeof GtpRoute
+  '/kontakti': typeof KontaktiRoute
+  '/remonti': typeof RemontiRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/gtp': typeof GtpRoute
+  '/kontakti': typeof KontaktiRoute
+  '/remonti': typeof RemontiRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/gtp' | '/kontakti' | '/remonti'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/gtp' | '/kontakti' | '/remonti'
+  id: '__root__' | '/' | '/gtp' | '/kontakti' | '/remonti'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  GtpRoute: typeof GtpRoute
+  KontaktiRoute: typeof KontaktiRoute
+  RemontiRoute: typeof RemontiRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/remonti': {
+      id: '/remonti'
+      path: '/remonti'
+      fullPath: '/remonti'
+      preLoaderRoute: typeof RemontiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/kontakti': {
+      id: '/kontakti'
+      path: '/kontakti'
+      fullPath: '/kontakti'
+      preLoaderRoute: typeof KontaktiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/gtp': {
+      id: '/gtp'
+      path: '/gtp'
+      fullPath: '/gtp'
+      preLoaderRoute: typeof GtpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -53,6 +104,9 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  GtpRoute: GtpRoute,
+  KontaktiRoute: KontaktiRoute,
+  RemontiRoute: RemontiRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

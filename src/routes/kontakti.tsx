@@ -1,18 +1,18 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { siteContent } from '#/data/site-content'
 import { buildSeoHead } from '#/lib/seo'
-import { HomePage } from '#/pages/home-page'
+import { KontaktiPage } from '#/pages/kontakti-page'
 
 const seo = buildSeoHead({
-  title: siteContent.seo.home.title,
-  description: siteContent.seo.home.description,
-  path: '/',
+  title: siteContent.seo.contacts.title,
+  description: siteContent.seo.contacts.description,
+  path: '/kontakti',
 })
 
-export const Route = createFileRoute('/')({
+export const Route = createFileRoute('/kontakti')({
   head: () => ({
     meta: seo.meta,
     links: seo.links,
   }),
-  component: HomePage,
+  component: KontaktiPage,
 })
