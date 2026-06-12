@@ -39,6 +39,6 @@ describe('siteContent', () => {
 
   it('exposes footer tagline and contact heading', () => {
     expect(siteContent.footer.tagline).toContain('Ловеч')
-    expect(siteContent.footer.contactHeading).toBe('Контакти')
+    expect(siteContent.footer.contactHeading).toBe('Адрес')
   })
 })

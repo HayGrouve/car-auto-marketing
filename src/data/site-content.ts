@@ -302,7 +302,7 @@ export const siteContent = {
   brandName: 'Автосервиз Ловеч',
   footer: {
     tagline: 'ГТП и автосервиз в Ловеч',
-    contactHeading: 'Контакти',
+    contactHeading: 'Адрес',
   } satisfies FooterContent,
   navigation: [
     { to: '/', label: 'Начало' },
