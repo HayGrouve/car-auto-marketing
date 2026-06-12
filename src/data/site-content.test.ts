@@ -36,4 +36,9 @@ describe('siteContent', () => {
     const icons = siteContent.pages.home.stats.map((stat) => stat.icon)
     expect(icons).toEqual(['clipboard-check', 'calendar-days', 'map-pin'])
   })
+
+  it('exposes footer tagline and contact heading', () => {
+    expect(siteContent.footer.tagline).toContain('Ловеч')
+    expect(siteContent.footer.contactHeading).toBe('Контакти')
+  })
 })

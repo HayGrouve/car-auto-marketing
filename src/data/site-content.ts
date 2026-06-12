@@ -47,6 +47,11 @@ export type PageCta = {
   description: string
 }
 
+export type FooterContent = {
+  tagline: string
+  contactHeading: string
+}
+
 export type HeroContent = {
   eyebrow?: string
   title: string
@@ -295,6 +300,10 @@ export const siteContent = {
   city: 'Ловеч',
   siteUrl: getSiteUrl(),
   brandName: 'Автосервиз Ловеч',
+  footer: {
+    tagline: 'ГТП и автосервиз в Ловеч',
+    contactHeading: 'Контакти',
+  } satisfies FooterContent,
   navigation: [
     { to: '/', label: 'Начало' },
     { to: '/gtp', label: 'ГТП' },
