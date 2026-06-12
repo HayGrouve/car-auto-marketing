@@ -15,7 +15,6 @@ export function KontaktiPage() {
         <section className="bg-[#fafafa]">
           <div className="grid md:grid-cols-2">
             <div className="flex flex-col justify-center px-6 py-12 lg:px-10 lg:py-16">
-              <p className="mb-4 text-xs font-bold uppercase tracking-widest text-[#1e3a8a]">01</p>
               <h2 className="text-3xl font-extrabold tracking-tight text-[#0a0a0a] md:text-4xl">
                 Адрес и работно време
               </h2>
