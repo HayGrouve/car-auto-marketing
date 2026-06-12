@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
 import { Route } from '#/routes/__root'
 
 describe('root route', () => {
@@ -16,9 +16,9 @@ describe('root route', () => {
     expect(
       screen.getByRole('heading', { name: 'Страницата не е намерена' }),
     ).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: 'Контакти' })).toHaveAttribute(
-      'href',
-      '/kontakti',
-    )
+    const headerNav = screen.getByTestId('site-nav')
+    expect(
+      within(headerNav).getByRole('link', { name: 'Контакти' }),
+    ).toHaveAttribute('href', '/kontakti')
   })
 })
