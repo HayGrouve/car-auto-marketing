@@ -65,10 +65,10 @@ export function SplitSection({
             </div>
           ) : null}
         </div>
-        <div className="min-h-[280px]">
+        <div className="min-h-[280px] overflow-hidden">
           <img
             alt=""
-            className="h-full min-h-[280px] w-full object-cover"
+            className="h-full min-h-[280px] w-full object-cover motion-safe:transition-transform motion-safe:duration-700 motion-safe:hover:scale-[1.03]"
             src={content.image}
           />
         </div>

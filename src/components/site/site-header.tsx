@@ -27,7 +27,7 @@ function SiteNavigation({
     >
       {siteContent.navigation.map((item) => (
         <Link
-          className="text-sm font-medium text-neutral-600 hover:text-neutral-900"
+          className="site-nav-link text-sm font-medium text-neutral-600 hover:text-neutral-900"
           key={item.to}
           onClick={onNavigate}
           to={item.to}

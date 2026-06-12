@@ -23,7 +23,7 @@ export function ContactChannelLink({ channel, variant, className }: Props) {
   return (
     <a
       className={cn(
-        'inline-flex items-center gap-2 px-5 py-3 text-sm font-bold rounded-none',
+        'inline-flex items-center gap-2 px-5 py-3 text-sm font-bold motion-safe:hover:-translate-y-0.5 motion-safe:active:translate-y-0 rounded-none',
         variantClasses[variant],
         className,
       )}
