@@ -23,5 +23,9 @@ describe('app startup router', () => {
     expect(
       screen.getByRole('navigation', { name: 'Основна навигация' }),
     ).toBeInTheDocument()
+    expect(
+      screen.getByRole('link', { name: 'Към съдържанието' }),
+    ).toHaveAttribute('href', '#main-content')
+    expect(document.getElementById('main-content')).toBeInTheDocument()
   })
 })

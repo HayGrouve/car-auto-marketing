@@ -1,7 +1,9 @@
+import { Clock, MapPin } from 'lucide-react'
 import { siteContent } from '#/data/site-content'
 
 export function SiteFooter() {
   const year = new Date().getFullYear()
+  const hoursSummary = siteContent.contact.hours.join(' · ')
 
   return (
     <footer className="border-t border-[#e5e5e5] bg-white px-6 py-6 lg:px-10">
@@ -23,7 +25,16 @@ export function SiteFooter() {
             {siteContent.contact.viberLabel}
           </a>
         </div>
-        <p>{siteContent.contact.address}</p>
+        <div className="space-y-1">
+          <p className="inline-flex items-center gap-2">
+            <MapPin aria-hidden className="size-4 shrink-0" />
+            {siteContent.contact.address}
+          </p>
+          <p className="inline-flex items-center gap-2">
+            <Clock aria-hidden className="size-4 shrink-0" />
+            {hoursSummary}
+          </p>
+        </div>
       </div>
     </footer>
   )

@@ -18,5 +18,10 @@ describe('KontaktiPage', () => {
       screen.getAllByRole('link', { name: siteContent.contact.viberLabel })[0],
     ).toHaveAttribute('href', siteContent.contact.viberHref)
     expect(screen.getByTitle('Карта до сервиза')).toBeInTheDocument()
+
+    const mapsLink = screen.getByRole('link', { name: 'Отвори в Google Maps' })
+    expect(mapsLink).toHaveAttribute('href', siteContent.contact.mapsLink)
+    expect(mapsLink).toHaveAttribute('target', '_blank')
+    expect(mapsLink).toHaveAttribute('rel', 'noopener noreferrer')
   })
 })

@@ -45,6 +45,8 @@ export function HeroSection({ content, secondaryCta }: HeroSectionProps) {
         <img
           alt={content.imageAlt ?? ''}
           className="hero-image-scale-in absolute inset-0 h-full w-full object-cover"
+          decoding="async"
+          fetchPriority="high"
           src={content.image}
         />
       ) : null}

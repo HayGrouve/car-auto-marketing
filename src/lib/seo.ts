@@ -29,6 +29,10 @@ export function buildSeoHead({
       { property: 'og:locale', content: 'bg_BG' },
       { property: 'og:url', content: canonical },
       { property: 'og:image', content: defaultOgImage },
+      { name: 'twitter:card', content: 'summary_large_image' },
+      { name: 'twitter:title', content: fullTitle },
+      { name: 'twitter:description', content: description },
+      { name: 'twitter:image', content: defaultOgImage },
     ],
     links: [{ rel: 'canonical', href: canonical }],
   }
@@ -48,5 +52,6 @@ export function buildLocalBusinessJsonLd() {
     },
     url: siteContent.siteUrl,
     image: defaultOgImage,
+    openingHours: siteContent.contact.schemaOpeningHours,
   }
 }

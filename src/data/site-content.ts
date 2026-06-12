@@ -1,4 +1,5 @@
 import { buildPhoneHref, buildViberHref } from '#/lib/contact-links'
+import { getSiteUrl } from '#/lib/site-url'
 
 export type SitePath = '/' | '/gtp' | '/remonti' | '/kontakti'
 
@@ -36,7 +37,9 @@ export type ContactChannels = {
   viberLabel: string
   address: string
   hours: string[]
+  schemaOpeningHours: string[]
   mapEmbedUrl: string
+  mapsLink: string
 }
 
 export type PageCta = {
@@ -60,9 +63,12 @@ export type SplitSectionContent = {
   imageAlt: string
 }
 
+export type StatIcon = 'clipboard-check' | 'calendar-days' | 'map-pin'
+
 export type StatItem = {
   value: string
   label: string
+  icon: StatIcon
 }
 
 export type PageContent = {
@@ -92,7 +98,9 @@ const contact = {
     'Понеделник - Петък: 08:30 - 18:00',
     'Събота: 09:00 - 13:00',
   ],
+  schemaOpeningHours: ['Mo-Fr 08:30-18:00', 'Sa 09:00-13:00'],
   mapEmbedUrl: 'https://www.google.com/maps?q=Ловеч&output=embed',
+  mapsLink: 'https://www.google.com/maps/search/?api=1&query=Ловеч',
 } satisfies ContactChannels
 
 const homeHero = {
@@ -209,9 +217,9 @@ const pages = {
       },
     ] satisfies SplitSectionContent[],
     stats: [
-      { value: 'ГТП', label: 'Годишен технически преглед' },
-      { value: 'Пн–Сб', label: 'Работим, когато ви трябваме' },
-      { value: 'Ловеч', label: 'Автосервиз с бързо обслужване' },
+      { value: 'ГТП', label: 'Годишен технически преглед', icon: 'clipboard-check' },
+      { value: 'Пн–Сб', label: 'Работим, когато ви трябваме', icon: 'calendar-days' },
+      { value: 'Ловеч', label: 'Автосервиз с бързо обслужване', icon: 'map-pin' },
     ] satisfies StatItem[],
     ctaBand: sharedCtaBand,
   },
@@ -285,7 +293,7 @@ const pages = {
 export const siteContent = {
   locale: 'bg-BG',
   city: 'Ловеч',
-  siteUrl: 'https://avtoserviz-lovech.bg',
+  siteUrl: getSiteUrl(),
   brandName: 'Автосервиз Ловеч',
   navigation: [
     { to: '/', label: 'Начало' },

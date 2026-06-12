@@ -35,6 +35,10 @@ export const Route = createRootRoute({
         name: 'description',
         content: homeSeo.description,
       },
+      {
+        name: 'theme-color',
+        content: '#1e3a8a',
+      },
     ],
     links: [
       {
@@ -61,8 +65,11 @@ function RootLayout() {
 
   return (
     <>
+      <a className="skip-link" href="#main-content">
+        Към съдържанието
+      </a>
       <SiteHeader />
-      <main className="min-h-screen bg-white">
+      <main className="min-h-screen bg-white" id="main-content">
         <Outlet />
       </main>
       <SiteFooter />
@@ -73,8 +80,11 @@ function RootLayout() {
 function RootNotFound() {
   return (
     <>
+      <a className="skip-link" href="#main-content">
+        Към съдържанието
+      </a>
       <SiteHeader />
-      <main className="min-h-screen bg-white px-6 py-16 lg:px-10">
+      <main className="min-h-screen bg-white px-6 py-16 lg:px-10" id="main-content">
         <div className="max-w-xl space-y-5">
           <p className="text-xs font-bold uppercase tracking-widest text-[#1e3a8a]">
             404

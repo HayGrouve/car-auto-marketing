@@ -14,7 +14,7 @@ test('homepage exposes the main call CTA and the site navigation', async ({ page
 test('contact page exposes the map container and working hours', async ({ page }) => {
   await page.goto('/kontakti')
 
-  await expect(page.getByText(/Понеделник - Петък/)).toBeVisible()
+  await expect(page.getByText(/Понеделник - Петък/).first()).toBeVisible()
   await expect(page.getByTestId('contact-map')).toBeVisible()
 })
 
@@ -25,4 +25,25 @@ test('every page exposes tel and viber contact links', async ({ page }) => {
     await expect(page.locator('a[href^="tel:"]').first()).toBeVisible()
     await expect(page.locator('a[href^="viber://"]').first()).toBeVisible()
   }
+})
+
+test('404 page links back to home', async ({ page }) => {
+  await page.goto('/does-not-exist')
+
+  await expect(page.getByRole('heading', { name: 'Страницата не е намерена' })).toBeVisible()
+  await expect(page.getByRole('link', { name: 'Към началото' })).toHaveAttribute('href', '/')
+})
+
+test('gtp nav link is active on gtp page', async ({ page }) => {
+  await page.goto('/gtp')
+
+  const gtpLink = page.getByTestId('site-nav').getByRole('link', { name: 'ГТП' })
+  await expect(gtpLink).toHaveAttribute('data-status', 'active')
+})
+
+test('home stats render lucide icons', async ({ page }) => {
+  await page.goto('/')
+
+  const statsStrip = page.getByTestId('stats-strip')
+  await expect(statsStrip.locator('svg')).toHaveCount(3)
 })

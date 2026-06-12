@@ -11,7 +11,6 @@ import {
   SheetTrigger,
 } from '#/components/ui/sheet'
 import { siteContent } from '#/data/site-content'
-import type { SitePath } from '#/data/site-content'
 import { cn } from '#/lib/utils'
 
 const navLinkClassName =
@@ -40,7 +39,7 @@ function SiteNavigation({
           inactiveProps={{ className: navLinkClassName }}
           key={item.to}
           onClick={onNavigate}
-          to={item.to as SitePath}
+          to={item.to}
         >
           {item.label}
         </Link>

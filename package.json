@@ -8,6 +8,9 @@
   "scripts": {
     "dev": "vite dev",
     "generate-routes": "tsr generate",
+    "prebuild": "node scripts/generate-seo-files.mjs",
+    "generate-seo": "node scripts/generate-seo-files.mjs",
+    "compress-images": "node scripts/compress-images.mjs",
     "build": "vite build",
     "preview": "vite preview",
     "test": "vitest run",
@@ -48,6 +51,7 @@
     "eslint": "^9.20.0",
     "jsdom": "^28.1.0",
     "prettier": "^3.8.1",
+    "sharp": "^0.35.1",
     "typescript": "^6.0.2",
     "vite": "^8.0.0",
     "vitest": "^4.1.5"

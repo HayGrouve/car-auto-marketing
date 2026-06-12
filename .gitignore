@@ -17,4 +17,9 @@ todos.json
 
 .worktrees
 
+.playwright-browsers
+.local-libs
+test-results/
+playwright-report/
+
 .superpowers

@@ -1,3 +1,4 @@
+import { Phone } from 'lucide-react'
 import { siteContent } from '#/data/site-content'
 import { cn } from '#/lib/utils'
 import { ViberIcon } from '#/components/site/viber-icon'
@@ -31,7 +32,7 @@ export function ContactChannelLink({ channel, variant, className, onClick }: Pro
       href={href}
       onClick={onClick}
     >
-      {!isPhone ? <ViberIcon className="size-4" /> : null}
+      {isPhone ? <Phone aria-hidden className="size-4" /> : <ViberIcon className="size-4" />}
       {label}
     </a>
   )

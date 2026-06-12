@@ -31,4 +31,9 @@ describe('siteContent', () => {
     expect(siteContent.pages.remonti.sections.length).toBeGreaterThanOrEqual(2)
     expect(siteContent.pages.kontakti.sections.length).toBeGreaterThanOrEqual(1)
   })
+
+  it('assigns a lucide icon key to every home stat', () => {
+    const icons = siteContent.pages.home.stats.map((stat) => stat.icon)
+    expect(icons).toEqual(['clipboard-check', 'calendar-days', 'map-pin'])
+  })
 })
