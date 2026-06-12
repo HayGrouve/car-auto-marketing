@@ -87,7 +87,6 @@ const contact = {
 } satisfies ContactChannels
 
 const homeHero = {
-  eyebrow: 'гр. Ловеч',
   title: 'ГТП и автосервиз в Ловеч',
   description:
     'Годишен преглед, ремонти и обслужване — на едно място в Ловеч. Обадете се и ще ви кажем кога да дойдете.',
@@ -135,9 +134,6 @@ const gtp = {
     'Дойдете при нас в Ловеч.',
     'Минавате прегледа и си тръгвате с всичко необходимо.',
   ],
-  ctaTitle: 'Запишете час за технически преглед',
-  ctaDescription:
-    'Най-лесно е да се обадите — ще ви запишем и ще отговорим на въпросите ви.',
 }
 
 const repairs = {
@@ -164,19 +160,19 @@ const repairs = {
         'Дребни ремонти, поддръжка и подготовка преди път — когато трябва нещо бързо оправено.',
     },
   ] satisfies ServiceGroup[],
-  ctaTitle: 'Обадете се за ремонт и консултация',
-  ctaDescription:
-    'Обадете се, разкажете какво ви притеснява — ще ви кажем как можем да помогнем.',
 }
 
 const contacts = {
   title: 'Контакти',
   description:
     'Намерете ни в Ловеч, вижте кога сме отворени и се обадете с един клик.',
-  ctaTitle: 'Свържете се директно по телефона',
-  ctaDescription:
-    'Ако картата не се зареди — адресът и телефонът са тук. Обадете се, ще ви насочим.',
 }
+
+const sharedCtaBand = {
+  title: 'Свържете се с нас за преглед или ремонт',
+  description:
+    'Най-лесно е да се обадите — ще ви запишем за преглед или ремонт и ще отговорим на въпросите ви.',
+} satisfies PageCta
 
 const pages = {
   home: {
@@ -204,11 +200,7 @@ const pages = {
       { value: 'Пн–Сб', label: 'Работим, когато ви трябваме' },
       { value: 'Ловеч', label: 'Автосервиз с бързо обслужване' },
     ] satisfies StatItem[],
-    ctaBand: {
-      title: 'Свържете се с нас за преглед или ремонт',
-      description:
-        'Най-лесно е да се обадите — ще ви запишем за преглед или ремонт и ще отговорим на въпросите ви.',
-    },
+    ctaBand: sharedCtaBand,
   },
   gtp: {
     hero: {
@@ -230,10 +222,7 @@ const pages = {
         image: '/images/trust-section.png',
       },
     ] satisfies SplitSectionContent[],
-    ctaBand: {
-      title: gtp.ctaTitle,
-      description: gtp.ctaDescription,
-    },
+    ctaBand: sharedCtaBand,
   },
   remonti: {
     hero: {
@@ -253,10 +242,7 @@ const pages = {
         image: '/images/trust-section.png',
       },
     ] satisfies SplitSectionContent[],
-    ctaBand: {
-      title: repairs.ctaTitle,
-      description: repairs.ctaDescription,
-    },
+    ctaBand: sharedCtaBand,
   },
   kontakti: {
     hero: {
@@ -271,10 +257,7 @@ const pages = {
         image: '/images/trust-section.png',
       },
     ] satisfies SplitSectionContent[],
-    ctaBand: {
-      title: contacts.ctaTitle,
-      description: contacts.ctaDescription,
-    },
+    ctaBand: sharedCtaBand,
   },
 } satisfies Record<'home' | 'gtp' | 'remonti' | 'kontakti', PageContent>
 

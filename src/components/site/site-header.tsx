@@ -1,5 +1,6 @@
 import { Link } from '@tanstack/react-router'
 import { Menu } from 'lucide-react'
+import { useState } from 'react'
 import { ContactChannelLink } from '#/components/site/contact-channel-link'
 import { Button } from '#/components/ui/button'
 import {
@@ -11,7 +12,13 @@ import {
 } from '#/components/ui/sheet'
 import { siteContent } from '#/data/site-content'
 
-function SiteNavigation({ className }: { className?: string }) {
+function SiteNavigation({
+  className,
+  onNavigate,
+}: {
+  className?: string
+  onNavigate?: () => void
+}) {
   return (
     <nav
       aria-label="Основна навигация"
@@ -22,6 +29,7 @@ function SiteNavigation({ className }: { className?: string }) {
         <Link
           className="text-sm font-medium text-neutral-600 hover:text-neutral-900"
           key={item.to}
+          onClick={onNavigate}
           to={item.to}
         >
           {item.label}
@@ -41,6 +49,8 @@ function HeaderContactLinks({ className }: { className?: string }) {
 }
 
 export function SiteHeader() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+
   return (
     <header className="border-b border-[#e5e5e5] bg-white px-6 py-4 lg:px-10">
       <div className="flex items-center justify-between gap-4">
@@ -62,7 +72,7 @@ export function SiteHeader() {
             className="hidden px-4 py-2 sm:inline-flex"
             variant="solid"
           />
-          <Sheet>
+          <Sheet onOpenChange={setMobileMenuOpen} open={mobileMenuOpen}>
             <SheetTrigger asChild>
               <Button
                 aria-label="Отвори меню"
@@ -80,7 +90,10 @@ export function SiteHeader() {
                   {siteContent.brandName}
                 </SheetTitle>
               </SheetHeader>
-              <SiteNavigation className="flex flex-col gap-4 px-4" />
+              <SiteNavigation
+                className="flex flex-col gap-4 px-4"
+                onNavigate={() => setMobileMenuOpen(false)}
+              />
               <HeaderContactLinks className="flex flex-col gap-3 px-4" />
             </SheetContent>
           </Sheet>

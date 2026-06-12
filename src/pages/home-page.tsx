@@ -20,7 +20,7 @@ export function HomePage() {
           reverse={index % 2 === 1}
         />
       ))}
-      <CtaBand subtitle={ctaBand.description} title={ctaBand.title} tone="accent" />
+      <CtaBand subtitle={ctaBand.description} title={ctaBand.title} />
     </>
   )
 }
