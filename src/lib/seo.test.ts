@@ -19,5 +19,13 @@ describe('buildSeoHead', () => {
           item.content === 'bg_BG',
       ),
     ).toBe(true)
+    expect(
+      seo.meta.some(
+        (item) =>
+          'property' in item &&
+          item.property === 'og:image' &&
+          item.content.includes('/images/lovech-service-shop.png'),
+      ),
+    ).toBe(true)
   })
 })

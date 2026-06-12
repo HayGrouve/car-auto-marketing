@@ -49,6 +49,7 @@ export type HeroContent = {
   title: string
   description: string
   image?: string
+  imageAlt?: string
   primaryCtaLabel?: string
 }
 
@@ -56,6 +57,7 @@ export type SplitSectionContent = {
   title: string
   description: string
   image: string
+  imageAlt: string
 }
 
 export type StatItem = {
@@ -69,6 +71,13 @@ export type PageContent = {
   stats?: StatItem[]
   ctaBand: PageCta
 }
+
+const imageAlts = {
+  shop: 'Автосервиз в Ловеч — работилница',
+  gtp: 'Годишен технически преглед в автосервиз',
+  repairs: 'Ремонт и поддръжка на автомобил в сервиз',
+  trust: 'Екип и обслужване в автосервиз Ловеч',
+} as const
 
 const phoneE164 = '+359888000000'
 
@@ -91,6 +100,7 @@ const homeHero = {
   description:
     'Годишен преглед, ремонти и обслужване — на едно място в Ловеч. Обадете се и ще ви кажем кога да дойдете.',
   image: '/images/lovech-service-shop.png',
+  imageAlt: imageAlts.shop,
   primaryCtaLabel: 'Обадете се',
 } satisfies HeroContent
 
@@ -182,17 +192,20 @@ const pages = {
         title: homeServiceCards[0].title,
         description: homeServiceCards[0].description,
         image: '/images/gtp-section.png',
+        imageAlt: imageAlts.gtp,
       },
       {
         title: homeServiceCards[1].title,
         description: homeServiceCards[1].description,
         image: '/images/repairs-section.png',
+        imageAlt: imageAlts.repairs,
       },
       {
         title: 'Защо да изберете нас',
         description:
           'Познаваме Ловеч и работим честно — обясняваме какво правим и защо, преди да пипнем нещо.',
         image: '/images/trust-section.png',
+        imageAlt: imageAlts.trust,
       },
     ] satisfies SplitSectionContent[],
     stats: [
@@ -207,6 +220,7 @@ const pages = {
       title: gtp.title,
       description: gtp.description,
       image: '/images/gtp-section.png',
+      imageAlt: imageAlts.gtp,
     },
     sections: [
       {
@@ -214,12 +228,14 @@ const pages = {
         description:
           'Обаждате се, уточняваме удобен час, минавате прегледа при нас и си тръгвате с всичко необходимо.',
         image: '/images/gtp-section.png',
+        imageAlt: imageAlts.gtp,
       },
       {
         title: 'Какво получавате',
         description:
           'Бързо записване, преглед на място и ясен отговор — без да обикаляте излишно.',
         image: '/images/trust-section.png',
+        imageAlt: imageAlts.trust,
       },
     ] satisfies SplitSectionContent[],
     ctaBand: sharedCtaBand,
@@ -229,17 +245,20 @@ const pages = {
       title: repairs.title,
       description: repairs.description,
       image: '/images/repairs-section.png',
+      imageAlt: imageAlts.repairs,
     },
     sections: [
       {
         title: repairs.groups[0].title,
         description: repairs.groups[0].description,
         image: '/images/repairs-section.png',
+        imageAlt: imageAlts.repairs,
       },
       {
         title: repairs.groups[1].title,
         description: `${repairs.groups[1].description} ${repairs.groups[2].description}`,
         image: '/images/trust-section.png',
+        imageAlt: imageAlts.trust,
       },
     ] satisfies SplitSectionContent[],
     ctaBand: sharedCtaBand,
@@ -249,12 +268,14 @@ const pages = {
       title: contacts.title,
       description: contacts.description,
       image: '/images/lovech-service-shop.png',
+      imageAlt: imageAlts.shop,
     },
     sections: [
       {
         title: 'Адрес и работно време',
         description: `${contact.address}. ${contact.hours.join('. ')}.`,
         image: '/images/trust-section.png',
+        imageAlt: imageAlts.trust,
       },
     ] satisfies SplitSectionContent[],
     ctaBand: sharedCtaBand,

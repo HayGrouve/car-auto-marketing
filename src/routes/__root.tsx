@@ -1,14 +1,22 @@
 import type { ReactNode } from 'react'
+import { useEffect } from 'react'
 import {
   HeadContent,
+  Link,
   Outlet,
   Scripts,
   createRootRoute,
+  useRouterState,
 } from '@tanstack/react-router'
+import { ContactChannelLink } from '#/components/site/contact-channel-link'
 import { SiteFooter } from '#/components/site/site-footer'
 import { SiteHeader } from '#/components/site/site-header'
 import { siteContent } from '#/data/site-content'
+import { buildLocalBusinessJsonLd } from '#/lib/seo'
 import appCss from '../styles.css?url'
+
+const homeSeo = siteContent.seo.home
+const defaultTitle = `${siteContent.brandName} | ГТП и ремонти в Ловеч`
 
 export const Route = createRootRoute({
   head: () => ({
@@ -21,18 +29,21 @@ export const Route = createRootRoute({
         content: 'width=device-width, initial-scale=1',
       },
       {
-        title: `${siteContent.brandName} | ГТП и ремонти в Ловеч`,
+        title: defaultTitle,
       },
       {
         name: 'description',
-        content:
-          'Годишен технически преглед и автосервизни ремонти в Ловеч с бърз телефонен контакт.',
+        content: homeSeo.description,
       },
     ],
     links: [
       {
         rel: 'stylesheet',
         href: appCss,
+      },
+      {
+        rel: 'manifest',
+        href: '/manifest.json',
       },
     ],
   }),
@@ -42,6 +53,12 @@ export const Route = createRootRoute({
 })
 
 function RootLayout() {
+  const pathname = useRouterState({ select: (state) => state.location.pathname })
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [pathname])
+
   return (
     <>
       <SiteHeader />
@@ -69,6 +86,15 @@ function RootNotFound() {
             Тази страница липсва. Върнете се към началото или се обадете — ще ви
             помогнем.
           </p>
+          <div className="flex flex-wrap gap-3 pt-2">
+            <Link
+              className="inline-flex items-center justify-center bg-[#1e3a8a] px-5 py-3 text-sm font-bold text-white hover:bg-[#1e40af] hover:text-white rounded-none"
+              to="/"
+            >
+              Към началото
+            </Link>
+            <ContactChannelLink channel="phone" variant="solid" />
+          </div>
         </div>
       </main>
       <SiteFooter />
@@ -77,10 +103,16 @@ function RootNotFound() {
 }
 
 function RootDocument({ children }: { children: ReactNode }) {
+  const jsonLd = JSON.stringify(buildLocalBusinessJsonLd())
+
   return (
     <html lang="bg">
       <head>
         <HeadContent />
+        <script
+          dangerouslySetInnerHTML={{ __html: jsonLd }}
+          type="application/ld+json"
+        />
       </head>
       <body>
         {children}

@@ -7,6 +7,8 @@ type BuildSeoHeadArgs = {
   path: SitePath
 }
 
+export const defaultOgImage = `${siteContent.siteUrl}/images/lovech-service-shop.png`
+
 export function buildSeoHead({
   title,
   description,
@@ -26,7 +28,25 @@ export function buildSeoHead({
       { property: 'og:type', content: 'website' },
       { property: 'og:locale', content: 'bg_BG' },
       { property: 'og:url', content: canonical },
+      { property: 'og:image', content: defaultOgImage },
     ],
     links: [{ rel: 'canonical', href: canonical }],
+  }
+}
+
+export function buildLocalBusinessJsonLd() {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'AutoRepair',
+    name: siteContent.brandName,
+    telephone: siteContent.contact.phoneE164,
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: siteContent.contact.address,
+      addressLocality: siteContent.city,
+      addressCountry: 'BG',
+    },
+    url: siteContent.siteUrl,
+    image: defaultOgImage,
   }
 }

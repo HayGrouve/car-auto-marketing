@@ -6,6 +6,7 @@ type Props = {
   channel: 'phone' | 'viber'
   variant: 'solid' | 'outline' | 'inverse-solid' | 'inverse-outline'
   className?: string
+  onClick?: () => void
 }
 
 const variantClasses: Record<Props['variant'], string> = {
@@ -15,7 +16,7 @@ const variantClasses: Record<Props['variant'], string> = {
   'inverse-outline': 'border border-white text-white hover:bg-white/10',
 }
 
-export function ContactChannelLink({ channel, variant, className }: Props) {
+export function ContactChannelLink({ channel, variant, className, onClick }: Props) {
   const isPhone = channel === 'phone'
   const href = isPhone ? siteContent.contact.phoneHref : siteContent.contact.viberHref
   const label = isPhone ? siteContent.contact.phoneDisplay : siteContent.contact.viberLabel
@@ -28,6 +29,7 @@ export function ContactChannelLink({ channel, variant, className }: Props) {
         className,
       )}
       href={href}
+      onClick={onClick}
     >
       {!isPhone ? <ViberIcon className="size-4" /> : null}
       {label}

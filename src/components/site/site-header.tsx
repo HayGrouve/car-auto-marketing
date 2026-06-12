@@ -11,6 +11,11 @@ import {
   SheetTrigger,
 } from '#/components/ui/sheet'
 import { siteContent } from '#/data/site-content'
+import type { SitePath } from '#/data/site-content'
+import { cn } from '#/lib/utils'
+
+const navLinkClassName =
+  'site-nav-link text-sm font-medium text-neutral-600 hover:text-neutral-900'
 
 function SiteNavigation({
   className,
@@ -27,10 +32,15 @@ function SiteNavigation({
     >
       {siteContent.navigation.map((item) => (
         <Link
-          className="site-nav-link text-sm font-medium text-neutral-600 hover:text-neutral-900"
+          activeOptions={{ exact: item.to === '/' }}
+          activeProps={{
+            className: cn(navLinkClassName, 'font-semibold text-neutral-900'),
+          }}
+          className={navLinkClassName}
+          inactiveProps={{ className: navLinkClassName }}
           key={item.to}
           onClick={onNavigate}
-          to={item.to}
+          to={item.to as SitePath}
         >
           {item.label}
         </Link>
@@ -39,17 +49,24 @@ function SiteNavigation({
   )
 }
 
-function HeaderContactLinks({ className }: { className?: string }) {
+function HeaderContactLinks({
+  className,
+  onNavigate,
+}: {
+  className?: string
+  onNavigate?: () => void
+}) {
   return (
     <div className={className}>
-      <ContactChannelLink channel="phone" variant="solid" />
-      <ContactChannelLink channel="viber" variant="outline" />
+      <ContactChannelLink channel="phone" onClick={onNavigate} variant="solid" />
+      <ContactChannelLink channel="viber" onClick={onNavigate} variant="outline" />
     </div>
   )
 }
 
 export function SiteHeader() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const closeMobileMenu = () => setMobileMenuOpen(false)
 
   return (
     <header className="border-b border-[#e5e5e5] bg-white px-6 py-4 lg:px-10">
@@ -92,9 +109,12 @@ export function SiteHeader() {
               </SheetHeader>
               <SiteNavigation
                 className="flex flex-col gap-4 px-4"
-                onNavigate={() => setMobileMenuOpen(false)}
+                onNavigate={closeMobileMenu}
               />
-              <HeaderContactLinks className="flex flex-col gap-3 px-4" />
+              <HeaderContactLinks
+                className="flex flex-col gap-3 px-4"
+                onNavigate={closeMobileMenu}
+              />
             </SheetContent>
           </Sheet>
         </div>

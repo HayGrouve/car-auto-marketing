@@ -5,6 +5,12 @@ import { SplitSection } from '#/components/site/split-section'
 import { StatsStrip } from '#/components/site/stats-strip'
 import { siteContent } from '#/data/site-content'
 
+const homeSectionLinks = [
+  { label: 'Повече за ГТП', href: '/gtp' },
+  { label: 'Повече за ремонти', href: '/remonti' },
+  undefined,
+] as const
+
 export function HomePage() {
   const { hero, stats, sections, ctaBand } = siteContent.pages.home
 
@@ -16,6 +22,7 @@ export function HomePage() {
         <Reveal key={section.title}>
           <SplitSection
             content={section}
+            link={homeSectionLinks[index]}
             mutedBackground={index % 2 === 1}
             number={`0${index + 1}`}
             reverse={index % 2 === 1}

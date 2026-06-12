@@ -43,7 +43,7 @@ export function HeroSection({ content, secondaryCta }: HeroSectionProps) {
     <section className="relative min-h-[340px] w-full overflow-hidden md:min-h-[420px]">
       {content.image ? (
         <img
-          alt=""
+          alt={content.imageAlt ?? ''}
           className="hero-image-scale-in absolute inset-0 h-full w-full object-cover"
           src={content.image}
         />

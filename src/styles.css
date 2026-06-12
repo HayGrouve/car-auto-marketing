@@ -336,8 +336,13 @@ a {
 }
 
 .site-nav-link:hover::after,
-.site-nav-link:focus-visible::after {
+.site-nav-link:focus-visible::after,
+.site-nav-link[data-status='active']::after {
   transform: scaleX(1);
+}
+
+.site-nav-link[data-status='active'] {
+  color: #0a0a0a;
 }
 
 @media (prefers-reduced-motion: reduce) {
