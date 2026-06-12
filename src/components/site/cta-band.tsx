@@ -18,7 +18,7 @@ const toneClasses = {
   },
 } as const
 
-export function CtaBand({ title, subtitle, tone = 'dark' }: CtaBandProps) {
+export function CtaBand({ title, subtitle, tone = 'accent' }: CtaBandProps) {
   const styles = toneClasses[tone]
 
   return (
