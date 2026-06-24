@@ -52,15 +52,55 @@ npm run check
 
 ## Deploy to Netlify
 
-This project ships with `netlify.toml` configured for a Netlify site:
+This project ships with `netlify.toml` configured for Netlify:
+
+| Setting | Value |
+|---------|-------|
+| Build command | `pnpm build` |
+| Publish directory | `dist/client` |
+| Node version | 22 (from `.nvmrc`) |
+
+### Prerequisites
+
+- Node 22
+- pnpm 10 (`corepack enable` if needed)
+
+### Local verify before deploy
+
+```bash
+pnpm install
+pnpm lint && pnpm test && pnpm build
+```
+
+### Netlify setup
 
 1. Push this repo to GitHub
 2. Visit https://app.netlify.com/start and import the repo
-3. Netlify auto-detects the build (`vite build` → `dist/client`)
-4. Open **Site settings → Environment variables** and add anything from `.env.example` that needs a real value in production
+3. Confirm Netlify reads build settings from `netlify.toml` (`pnpm build` → `dist/client`)
+4. Open **Site settings → Environment variables** and add:
+
+| Variable | Required | Example | Purpose |
+|----------|----------|---------|---------|
+| `VITE_SITE_URL` | Yes (Production) | `https://avtoserviz-lovech.bg` | Canonical URL, sitemap, robots, OG/Twitter meta |
+
+Until a custom domain is live, use your Netlify subdomain (e.g. `https://your-site.netlify.app`).
+
 5. Trigger the first deploy
 
-Server functions and API routes run on Netlify Functions. For lower-latency request handling, see Netlify Edge Functions: https://docs.netlify.com/edge-functions/overview.
+### First deploy checklist
+
+- [ ] Netlify build succeeds
+- [ ] Homepage loads
+- [ ] `/sitemap.xml` and `/robots.txt` use your `VITE_SITE_URL` domain
+- [ ] Page source: `canonical` and `og:url` match `VITE_SITE_URL`
+
+### CI
+
+GitHub Actions runs `pnpm lint`, `pnpm test`, and `pnpm build` on every push and pull request to `main`.
+
+E2e tests (`pnpm test:e2e`) run locally only — they require Playwright browsers.
+
+Server-side rendering runs on Netlify Functions via `@netlify/vite-plugin-tanstack-start`.
 
 
 ## Shadcn
