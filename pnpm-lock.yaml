@@ -63,6 +63,9 @@ importers:
       '@tanstack/eslint-config':
         specifier: latest
         version: 0.4.0(@typescript-eslint/utils@8.61.0(eslint@9.39.4(jiti@2.7.0))(typescript@6.0.3))(eslint@9.39.4(jiti@2.7.0))(typescript@6.0.3)
+      '@tanstack/history':
+        specifier: 1.162.0
+        version: 1.162.0
       '@tanstack/router-cli':
         specifier: ^1.132.0
         version: 1.167.17
