@@ -72,3 +72,10 @@ describe('buildLocalBusinessJsonLd', () => {
     expect(jsonLd.url).toBe(siteContent.siteUrl)
   })
 })
+
+describe('siteContent seo entries', () => {
+  it('includes gaz page seo and gas mention on home', () => {
+    expect(siteContent.seo.gaz.title).toBe('Газови системи')
+    expect(siteContent.seo.home.description).toContain('газови системи')
+  })
+})

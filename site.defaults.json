@@ -1,3 +1,4 @@
 {
-  "siteUrl": "https://avtoserviz-lovech.bg"
+  "siteUrl": "https://avtoserviz-lovech.bg",
+  "publicPaths": ["/", "/gtp", "/gaz", "/remonti", "/kontakti"]
 }

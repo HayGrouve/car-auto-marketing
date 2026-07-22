@@ -2,7 +2,7 @@ import { writeFile } from 'node:fs/promises'
 import siteDefaults from '../site.defaults.json' with { type: 'json' }
 
 const siteUrl = (process.env.VITE_SITE_URL ?? siteDefaults.siteUrl).replace(/\/$/, '')
-const paths = ['/', '/gtp', '/remonti', '/kontakti']
+const paths = siteDefaults.publicPaths ?? ['/', '/gtp', '/remonti', '/kontakti']
 
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">

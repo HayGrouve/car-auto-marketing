@@ -16,6 +16,7 @@ describe('SiteHeader', () => {
 
     expectNavLink('Начало', '/')
     expectNavLink('ГТП', '/gtp')
+    expectNavLink('Газови системи', '/gaz')
     expectNavLink('Ремонти', '/remonti')
     expectNavLink('Контакти', '/kontakti')
 
