@@ -6,6 +6,18 @@ Replace generic repair placeholders with owner-approved **15 real services**, ad
 
 Builds on [2026-07-22-stefi-auto-gas-content-swap-design.md](./2026-07-22-stefi-auto-gas-content-swap-design.md) (implemented). Extends the site from **4 to 5 public routes**.
 
+### Supersedes (prior content-swap spec)
+
+The content-swap spec states gas is **Контакти-only in UI** (nav/header CTAs omit gas). **This spec supersedes that decision:**
+
+| Surface | Phone shown | Notes |
+|---------|-------------|-------|
+| `/gaz` Hero + CtaBand | **`0887 816 055`** (gas) | `contactContext="gas"` |
+| Header + footer (all pages) | **`0876 689 736`** (service) | **Intentional** — global chrome stays on default service line; no route-aware header context in this scope |
+| `/kontakti` gas block | **`0887 816 055`** | Unchanged; optional cross-link to `/gaz` (see Minor items) |
+
+Gas is promoted from contacts-only to a **full nav page** with context-aware page CTAs. JSON-LD already lists all three lines — no schema change.
+
 ## Approved decisions
 
 | Topic | Decision |
@@ -13,11 +25,32 @@ Builds on [2026-07-22-stefi-auto-gas-content-swap-design.md](./2026-07-22-stefi-
 | Architecture | Centralized `services[]` catalog (Approach 2) |
 | New route | **`/gaz`** — nav label **„Газови системи”** |
 | Content depth | Hybrid — summary always visible; `<details>` expand when `details` field exists |
-| Home page | Third service block + hero/stats highlight gas |
+| Home page | **Option A** — 3 service sections (ГТП · Ремонти · Газ); **drop** „Защо да изберете нас” split section |
+| Home stats | Replace **stat 3** (Ловеч) with **`LPG/CNG` / „Монтаж и сервиз на газ”**; new `StatIcon` key **`fuel`** (Lucide `Fuel`) |
+| Home hero title | Update to **`ГТП, сервиз и газови системи в Ловеч`** (matches SEO + footer) |
 | `/remonti` layout | Grouped categories with service lists + optional expand |
 | `/gtp` layout | Keep process split sections; add expandable ГТП service block |
-| `/gaz` contact | **`contactContext="gas"`** → `0887 816 055` |
-| Images | Reuse existing assets until dedicated gas photography exists |
+| `/gaz` layout | Hero → ServiceCatalog → CtaBand (**no** intro split section) |
+| `/gaz` contact | **`contactContext="gas"`** on Hero + CtaBand only → `0887 816 055` |
+| `/gaz` CTA copy | **Page-specific** CtaBand (not shared) — mentions gas |
+| Flat catalog heading | Page-specific `<h2>` above flat lists (see UI) |
+| Sitemap | Derive paths from `siteContent.navigation`; includes `/gaz` |
+| Images | Reuse existing assets until dedicated gas photo; add **`imageAlts.gas`** constant |
+| Reveal | New catalog blocks wrapped in `<Reveal>` like existing pages |
+| Details bullets | `·` lines stay **plain `<p>`** after `\n\n` split — not converted to `<ul>` |
+
+## Resolved clarifications
+
+| # | Question | Decision |
+|---|----------|----------|
+| 1 | Home trust section vs gas | **Replace** section index 2 with gas; remove hardcoded trust split section |
+| 2 | Header on `/gaz` | **Service line** in header/footer (unchanged global behavior) |
+| 3 | Which home stat → LPG/CNG | **Stat index 2** (was „Ловеч” / map-pin) → **`fuel`** icon |
+| 4 | `/gaz` intro split | **No** — removed from data model |
+| 5 | `sharedCtaBand` | Keep for home/gtp/remonti/kontakti; **`pages.gaz.ctaBand`** is page-specific |
+| 6 | `homeTrustPoints` | **Delete** — unused dead data after trust section removal |
+| 7 | SEO `repairs` key | **Keep** `seo.repairs` key (matches existing route naming); add **`seo.gaz`** |
+| 8 | `ServiceCard` href | Links stay in **`homeSectionLinks`** array in `home-page.tsx` (current pattern); type unchanged |
 
 ---
 
@@ -79,6 +112,8 @@ export type ServiceGroupDef = {
   intro: string
   serviceIds: readonly string[]
 }
+
+export type StatIcon = 'clipboard-check' | 'calendar-days' | 'fuel'  // replaces 'map-pin' on home stats
 ```
 
 Extend `ContactContext`:
@@ -91,20 +126,40 @@ export type ContactContext = 'default' | 'gtp' | 'gaz' | 'remonti'
 
 - `services: readonly Service[]` — all 15 entries with Bulgarian copy (see Content catalog below)
 - `repairs.groups: readonly ServiceGroupDef[]` — three remonti groups referencing service IDs
-- `gas` page object — hero, SEO-facing description, optional intro split section
-- Helpers in `src/lib/services.ts` (or inline exports from `site-content.ts`):
+- `gas` top-level object — hero copy only (mirrors `gtp` / `repairs` pattern)
+- `pages` record — extend to **`Record<'home' | 'gtp' | 'gaz' | 'remonti' | 'kontakti', PageContent>`**
+- `pages.gaz` — hero, **`ctaBand`** (page-specific), no `sections` split blocks
+- Helpers in `src/lib/services.ts`:
   - `getServicesForPage(page: ServicePage): Service[]`
   - `getRemontiGroupsWithServices(): Array<ServiceGroupDef & { services: Service[] }>`
+  - **`assertValidServiceCatalog()`** — called at module load from `site-content.ts`
 
-**Rules:**
+**Catalog rules:**
 
 - `details` omitted → no expand UI
-- `groupId` required when `page === 'remonti'`
-- Service order on each page follows array order in `serviceIds` / page filter, not alphabetical
+- `groupId` **required** when `page === 'remonti'`; must match a `repairs.groups[].id`
+- Service order on each page follows `serviceIds` array order / catalog declaration order, not alphabetical
 
-### Deprecate
+**Validation (`assertValidServiceCatalog`) — fail fast at module load:**
 
-Remove inline `items: string[]` from the old `ServiceGroup` type. Replace with `ServiceGroupDef` + catalog refs. The old generic remonti split-section body copy (three placeholder groups) is replaced by the grouped catalog UI.
+| Rule | Error if violated |
+|------|-------------------|
+| Unique service `id` values | Duplicate id |
+| Every `serviceIds` entry exists in `services[]` | Unknown id in group |
+| Every `page === 'remonti'` service has valid `groupId` | Missing or unknown `groupId` |
+| Every remonti service appears in **exactly one** group | Orphan or double-assigned service |
+| Group `serviceIds` length matches remonti service count | Count mismatch (expect 11) |
+
+### Remove / refactor (no parallel content sources)
+
+| Removed | Replacement |
+|---------|-------------|
+| `ServiceGroup` type with `items: string[]` | `ServiceGroupDef` + `services[]` |
+| `pages.remonti.sections` placeholder split sections | `ServiceCatalog` grouped UI only |
+| `homeTrustPoints` + trust split section (index 2) | Third **gas** service section from `homeServiceCards[2]` |
+| Generic remonti group copy in split sections | Group intros in `repairs.groups[].intro` |
+
+After implementation, **`repairs.groups` is the only remonti grouping source**; catalog is the only service copy source.
 
 ---
 
@@ -114,10 +169,17 @@ Remove inline `items: string[]` from the old `ServiceGroup` type. Replace with `
 
 **File:** `src/components/site/service-expandable-item.tsx`
 
-- Renders service **title** (`<h3>`) and **summary** (`<p>`)
-- When `details` is set: wrap body in `<details>` with `<summary>Повече информация</summary>`
+- Renders service **title** (`<h3>`) and **summary** (`<p>`) — summary is **always visible** outside `<details>`
+- When `details` is set: `<details>` below summary with `<summary>Повече информация</summary>`; expanded region holds detail paragraphs only
 - Split `details` on `\n\n` into multiple `<p>` elements
+- **Bullet lines (`· …`) render as plain paragraphs**, not `<ul>/<li>` — intentional; do not “fix” later
 - Match existing typography: `#0a0a0a` titles, `#525252` body, no new accent colors
+
+**Accessibility:**
+
+- `<summary>` must not duplicate the visible summary paragraph (current design satisfies this)
+- Give each service title a stable `id`; optional `aria-labelledby` on expanded content region
+- Keyboard: native `<details>` toggle; logical tab order title → summary → next service
 
 ### `ServiceGroupSection`
 
@@ -135,33 +197,57 @@ Props:
 
 ```ts
 type ServiceCatalogProps =
-  | { variant: 'flat'; services: Service[] }
+  | { variant: 'flat'; heading: string; services: Service[] }
   | { variant: 'grouped'; groups: Array<ServiceGroupDef & { services: Service[] }> }
 ```
 
-Padding/rhythm: `px-6 py-12 lg:px-10 lg:py-16`, consistent with `SplitSection` text column.
+- **Flat variant:** render page-specific `<h2>{heading}</h2>` above the service list (grouped variant uses per-group `<h2>` from group titles)
+- Flat catalog headings: **`/gaz`** → „Газови услуги”; **`/gtp`** → „Годишен технически преглед — подробности”
+- Padding/rhythm: `px-6 py-12 lg:px-10 lg:py-16`, consistent with `SplitSection` text column
+- Wrap catalog blocks in **`<Reveal>`** (same as hero-adjacent sections on other pages)
 
 ### Page layouts
 
 | Page | Structure |
 |------|-----------|
-| `/gaz` | `HeroSection` (`contactContext="gas"`) → `ServiceCatalog` (flat, 3) → `CtaBand` (`contactContext="gas"`) |
-| `/gtp` | `HeroSection` (`contactContext="gtp"`) → existing 2 split sections (process) → `ServiceCatalog` (flat, 1) → `CtaBand` (`contactContext="gtp"`) |
-| `/remonti` | `HeroSection` (`contactContext="remonti"`) → `ServiceCatalog` (grouped, 3 groups) → `CtaBand` (`contactContext="remonti"`) |
+| `/gaz` | `HeroSection` (`contactContext="gas"`) → `<Reveal><ServiceCatalog flat /></Reveal>` → `CtaBand` (`contactContext="gas"`, page-specific copy) |
+| `/gtp` | `HeroSection` (`contactContext="gtp"`) → 2 split sections (process) → `<Reveal><ServiceCatalog flat /></Reveal>` → `CtaBand` (`contactContext="gtp"`, shared) |
+| `/remonti` | `HeroSection` (`contactContext="remonti"`) → `<Reveal><ServiceCatalog grouped /></Reveal>` → `CtaBand` (`contactContext="remonti"`, shared) |
 
 **New files:** `src/routes/gaz.tsx`, `src/pages/gaz-page.tsx` (mirror gtp/remonti pattern).
 
-### Home page updates
+### Home page updates (Option A)
+
+**Before (3 sections):** ГТП · Ремонти · „Защо да изберете нас”  
+**After (3 sections):** ГТП · Ремонти · **Газови системи**
 
 | Field | Target |
 |-------|--------|
-| `homeHero.description` | Mention **ГТП, сервиз и газови системи** |
-| `homeServiceCards` | Add third card: **Газови системи** with short summary + link target `/gaz` |
-| `pages.home.sections` | Third split section for gas; `homeSectionLinks[2]` → `{ label: 'Повече за газ', href: '/gaz' }` |
-| `pages.home.stats` | Replace one stat with gas highlight, e.g. value **`LPG/CNG`**, label **`Монтаж и сервиз на газ`** |
+| `homeHero.title` | **`ГТП, сервиз и газови системи в Ловеч`** |
+| `homeHero.description` | Mention all three offerings; keep call-to-action tone |
+| `homeServiceCards` | Three cards — indices 0/1 unchanged; **index 2 = Газови системи** |
+| `pages.home.sections` | Built from all three `homeServiceCards` (remove hardcoded trust section) |
+| `homeSectionLinks` | `[0]` → `/gtp`, `[1]` → `/remonti`, `[2]` → `/gaz` (`Повече за газ`) |
+| `pages.home.stats[2]` | **`{ value: 'LPG/CNG', label: 'Монтаж и сервиз на газ', icon: 'fuel' }`** |
+| `homeTrustPoints` | **Delete** export and const |
 | `navigation` | Insert `{ to: '/gaz', label: 'Газови системи' }` after ГТП, before Ремонти |
 
-**Images:** Gas hero/section uses `/images/repairs-section.png` and alt **„Монтаж и сервиз на газова уредба в автосервиз”** until a dedicated asset exists.
+**Images:** Gas section uses `/images/repairs-section.png`; add **`imageAlts.gas`** = „Монтаж и сервиз на газова уредба в автосервиз” in `imageAlts` const (used by home section + `/gaz` hero).
+
+### CTA band copy
+
+**Shared** (`sharedCtaBand`) — unchanged for home, gtp, remonti, kontakti:
+
+> „Свържете се с нас за преглед или ремонт”
+
+**`/gaz` page-specific** (`pages.gaz.ctaBand`):
+
+```ts
+{
+  title: 'Обадете се за газови системи',
+  description: 'Монтаж, ремонт или преглед на LPG/CNG — направете едно обаждане на линията за газови системи.',
+}
+```
 
 ---
 
@@ -181,7 +267,9 @@ case 'gas':
 | `gaz` | **`gas`** |
 | `remonti` | `service` |
 
-`/gaz` passes `contactContext="gas"` to `HeroSection` and `CtaBand`.
+`/gaz` passes `contactContext="gas"` to `HeroSection` and `CtaBand` only.
+
+**Header / footer on `/gaz`:** still resolve **`default`** → service line (`0876 689 736`). Visitors who need gas specifically use the hero/CTA or Контакти gas block.
 
 ---
 
@@ -208,6 +296,16 @@ home: {
 ```
 
 `buildSeoHead` for `/gaz` uses path `'/gaz'`. JSON-LD structure unchanged (gas line already in `contactPoint[]`).
+
+### Sitemap / robots
+
+**File:** `scripts/generate-seo-files.mjs`
+
+Replace hardcoded 4-path array with paths derived from **`siteContent.navigation`** (or a shared exported `publicPaths` list in `site-content.ts` imported by the script). Must include **`/gaz`**.
+
+`pnpm build` runs `prebuild` → sitemap generation; regenerated **`public/sitemap.xml`** must list 5 URLs.
+
+**Optional alignment:** `public/manifest.json` `name` → **`Stefi Auto Gas — ГТП, сервиз и газови системи`** (footer tagline already mentions gas).
 
 ---
 
@@ -446,7 +544,7 @@ All copy is **Bulgarian**. Summaries are site-scannable (2–4 sentences). `deta
 
 ## Error handling
 
-- **Missing service ID in group:** throw at module init / fail tests (same pattern as missing contact line)
+- **Invalid catalog:** `assertValidServiceCatalog()` throws at module load (same pattern as missing contact line)
 - **Expand without JS:** native `<details>` works without JavaScript
 - **Long expanded text on mobile:** no max-height trap; page scrolls naturally
 - **Missing image:** alt text + layout unchanged (existing pattern)
@@ -457,28 +555,35 @@ All copy is **Bulgarian**. Summaries are site-scannable (2–4 sentences). `deta
 
 | File | Assertions |
 |------|------------|
-| `src/data/site-content.test.ts` | 15 services; correct page counts; 5 nav routes; gas nav entry |
-| `src/lib/services.test.ts` | Group resolution; order preserved |
+| `src/data/site-content.test.ts` | 15 services; page counts; 5 nav routes; **`homeTrustPoints` removed**; stat[2] is `fuel` |
+| `src/lib/services.test.ts` | Group resolution; order preserved; validation throws on bad fixture |
 | `src/lib/contact-context.test.ts` | `gas` → gas line E.164 |
-| `src/components/site/service-expandable-item.test.tsx` | Expand absent without `details`; present with `details` |
-| `src/routes/service-routes.test.tsx` | `/gaz` hero + 3 services + gas phone |
-| `src/routes/index.test.tsx` | Home third section link to `/gaz` |
-| `e2e/site-smoke.spec.ts` | Nav to `/gaz`; `/gaz` tel contains `887816055`; 5 nav items |
+| `src/components/site/service-expandable-item.test.tsx` | Expand absent without `details`; present with `details`; bullets stay in `<p>` |
+| `src/components/site/service-catalog.test.tsx` | Flat heading rendered; grouped h2 per group |
+| `src/components/site/site-header.test.tsx` | **5 nav links** including „Газови системи” |
+| `src/components/site/stat-icon.test.tsx` (or extend existing) | `fuel` icon renders |
+| `src/routes/service-routes.test.tsx` | `/gaz` hero + 3 services + gas phone; **remonti** expects new group titles (not „Диагностика и обслужване”) |
+| `src/routes/index.test.tsx` | Home section[2] is gas; link to `/gaz`; **no** „Защо да изберете нас” section |
+| `src/lib/seo.test.ts` | `seo.gaz` entry; updated `seo.home.description` |
+| `scripts/generate-seo-files.mjs` or sitemap test | **`/gaz`** present in generated sitemap |
+| `e2e/site-smoke.spec.ts` | **`sitePaths`** includes `/gaz`; nav to `/gaz`; `/gaz` hero tel `887816055`; **active nav** on `/gaz`; 5 nav items; tel/viber loop covers `/gaz` |
 
-**Quality gate:** `pnpm test` and `pnpm build` pass.
+**Quality gate:** `pnpm test` and `pnpm build` pass (build regenerates sitemap with 5 paths).
 
 ---
 
 ## Definition of done
 
-- [ ] `services[]` catalog with all 15 services and Bulgarian copy
-- [ ] `/gaz` route, page, nav entry, SEO, and `contactContext="gas"` CTAs
-- [ ] `ServiceCatalog` + `ServiceExpandableItem` on `/gaz`, `/gtp`, `/remonti`
-- [ ] `/remonti` shows 3 grouped categories (replaces placeholder split sections)
-- [ ] `/gtp` retains process sections + expandable ГТП service
-- [ ] Home: third service block, hero/stats gas highlight, link to `/gaz`
-- [ ] `ContactContext` includes `gas`; resolver tested
-- [ ] All existing tests updated; new tests added
+- [ ] `services[]` catalog with all 15 services and Bulgarian copy; **`assertValidServiceCatalog()`** at load
+- [ ] `/gaz` route, page, nav entry, **`seo.gaz`**, page-specific CtaBand, `contactContext="gas"` on hero/CTA
+- [ ] `ServiceCatalog` + `ServiceExpandableItem` on `/gaz`, `/gtp`, `/remonti` (inside `<Reveal>`)
+- [ ] `/remonti` grouped catalog only — **`pages.remonti.sections` removed**
+- [ ] `/gtp` retains process split sections + expandable ГТП catalog block
+- [ ] Home: **3 service sections** (ГТП · Ремонти · Газ); trust section + **`homeTrustPoints` removed**
+- [ ] Home hero title + stat[2] (`fuel` / LPG/CNG) updated
+- [ ] `ContactContext` includes `gas`; resolver tested; header/footer stay on service line
+- [ ] **`scripts/generate-seo-files.mjs`** derives 5 paths; **`public/sitemap.xml`** regenerated
+- [ ] All tests in table above updated or added
 - [ ] `pnpm test` and `pnpm build` green
 
 ---
@@ -498,12 +603,22 @@ All copy is **Bulgarian**. Summaries are site-scannable (2–4 sentences). `deta
 
 - `src/data/site-content.ts` (+ test)
 - `src/lib/contact-context.ts` (+ test)
+- `src/lib/seo.test.ts`
+- `src/components/site/stat-icon.tsx` (+ test if split)
+- `src/components/site/site-header.test.tsx`
 - `src/pages/home-page.tsx`
 - `src/pages/gtp-page.tsx`
 - `src/pages/remonti-page.tsx`
 - `src/routes/index.test.tsx`
 - `src/routes/service-routes.test.tsx`
+- `scripts/generate-seo-files.mjs`
+- `public/sitemap.xml` (regenerated)
 - `e2e/site-smoke.spec.ts`
 - `src/routeTree.gen.ts` (generated by router)
 
-**Not modified:** favicon, domain config, map embed, contact address/hours, manifest (unless nav-related copy needed)
+**Optional:**
+
+- `public/manifest.json` — align `name` with gas mention
+- `src/components/site/contact-details.tsx` — cross-link „Вижте страницата за газови системи” near gas phone block
+
+**Not modified:** favicon, domain config, map embed, contact address/hours
