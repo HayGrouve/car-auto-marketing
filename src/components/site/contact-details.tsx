@@ -33,23 +33,22 @@ export function ContactDetails() {
           <p className="text-xs font-bold uppercase tracking-widest text-[#525252]">
             {line.label}
           </p>
-          <a
-            aria-label={`${line.label}: ${line.phoneDisplay}`}
-            className="inline-flex items-center gap-2 text-lg font-bold text-[#1e3a8a] underline-offset-4 hover:text-[#1e40af] hover:underline"
-            href={line.phoneHref}
-          >
-            <Phone aria-hidden className="size-5 shrink-0" />
-            {line.phoneDisplay}
-          </a>
-          <div className="space-y-1">
+          <div className="flex flex-col gap-2">
             <a
-              className="inline-flex items-center gap-2 text-lg font-bold text-[#7360f2] underline-offset-4 hover:text-[#5a4fd1] hover:underline"
+              aria-label={`${line.label}: ${line.phoneDisplay}`}
+              className="flex w-fit items-center gap-2 text-lg font-bold text-[#1e3a8a] underline-offset-4 hover:text-[#1e40af] hover:underline"
+              href={line.phoneHref}
+            >
+              <Phone aria-hidden className="size-5 shrink-0" />
+              {line.phoneDisplay}
+            </a>
+            <a
+              className="flex w-fit items-center gap-2 text-lg font-bold text-[#7360f2] underline-offset-4 hover:text-[#5a4fd1] hover:underline"
               href={line.viberHref}
             >
               <ViberIcon className="size-5 shrink-0" />
               {line.viberLabel}
             </a>
-            <p className="text-sm text-[#525252]">Бързо съобщение</p>
           </div>
         </div>
       ))}
