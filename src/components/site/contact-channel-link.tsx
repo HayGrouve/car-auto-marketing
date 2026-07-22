@@ -1,10 +1,14 @@
 import { Phone } from 'lucide-react'
-import { siteContent } from '#/data/site-content'
+import type { ContactContext } from '#/data/site-content'
+import { resolveContactLine } from '#/lib/contact-context'
 import { cn } from '#/lib/utils'
 import { ViberIcon } from '#/components/site/viber-icon'
 
+const COMPACT_VIBER_LABEL = 'Пишете ни във Viber'
+
 type Props = {
   channel: 'phone' | 'viber'
+  context?: ContactContext
   variant: 'solid' | 'outline' | 'inverse-solid' | 'inverse-outline'
   className?: string
   onClick?: () => void
@@ -17,10 +21,17 @@ const variantClasses: Record<Props['variant'], string> = {
   'inverse-outline': 'border border-white text-white hover:bg-white/10',
 }
 
-export function ContactChannelLink({ channel, variant, className, onClick }: Props) {
+export function ContactChannelLink({
+  channel,
+  context = 'default',
+  variant,
+  className,
+  onClick,
+}: Props) {
+  const line = resolveContactLine(context)
   const isPhone = channel === 'phone'
-  const href = isPhone ? siteContent.contact.phoneHref : siteContent.contact.viberHref
-  const label = isPhone ? siteContent.contact.phoneDisplay : siteContent.contact.viberLabel
+  const href = isPhone ? line.phoneHref : line.viberHref
+  const label = isPhone ? line.phoneDisplay : COMPACT_VIBER_LABEL
 
   return (
     <a
