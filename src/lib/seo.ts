@@ -1,5 +1,6 @@
 import { siteContent } from '#/data/site-content'
 import type { SitePath } from '#/data/site-content'
+import { getDefaultContactLine } from '#/lib/contact-context'
 
 type BuildSeoHeadArgs = {
   title: string
@@ -39,11 +40,19 @@ export function buildSeoHead({
 }
 
 export function buildLocalBusinessJsonLd() {
+  const defaultLine = getDefaultContactLine()
+
   return {
     '@context': 'https://schema.org',
     '@type': 'AutoRepair',
     name: siteContent.brandName,
-    telephone: siteContent.contact.phoneE164,
+    telephone: defaultLine.phoneE164,
+    contactPoint: siteContent.contact.lines.map((line) => ({
+      '@type': 'ContactPoint',
+      telephone: line.phoneE164,
+      contactType: 'customer service',
+      description: line.label,
+    })),
     address: {
       '@type': 'PostalAddress',
       streetAddress: siteContent.contact.address,
