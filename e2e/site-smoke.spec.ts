@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test'
 
-const sitePaths = ['/', '/gtp', '/remonti', '/kontakti'] as const
+const sitePaths = ['/', '/gtp', '/gaz', '/remonti', '/kontakti'] as const
 
 test('homepage exposes the main call CTA and the site navigation', async ({ page }) => {
   await page.goto('/')
@@ -21,6 +21,20 @@ test('gtp page uses inspections phone number', async ({ page }) => {
     'href',
     'tel:+359876105674',
   )
+})
+
+test('gaz page uses gas phone number in hero', async ({ page }) => {
+  await page.goto('/gaz')
+  await expect(page.getByRole('link', { name: 'Обадете се' })).toHaveAttribute(
+    'href',
+    'tel:+359887816055',
+  )
+})
+
+test('gaz nav link is active on gaz page', async ({ page }) => {
+  await page.goto('/gaz')
+  const gazLink = page.getByTestId('site-nav').getByRole('link', { name: 'Газови системи' })
+  await expect(gazLink).toHaveAttribute('data-status', 'active')
 })
 
 test('contact page shows three phone links', async ({ page }) => {
