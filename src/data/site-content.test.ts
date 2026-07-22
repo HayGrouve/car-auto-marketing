@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { buildViberHref } from '#/lib/contact-links'
+import { buildPhoneHref, buildViberHref } from '#/lib/contact-links'
 import { siteContent } from '#/data/site-content'
 
 describe('siteContent', () => {
@@ -15,12 +15,26 @@ describe('siteContent', () => {
     expect(siteContent.home.hero.title).toContain('Ловеч')
   })
 
-  it('exposes phone and viber contact channels from the same number', () => {
-    expect(siteContent.contact.phoneHref).toMatch(/^tel:/)
-    expect(siteContent.contact.viberHref).toBe(
-      buildViberHref(siteContent.contact.phoneE164),
-    )
-    expect(siteContent.contact.viberLabel).toContain('Viber')
+  it('defines three contact lines with real Stefi Auto Gas numbers', () => {
+    expect(siteContent.contact.lines).toHaveLength(3)
+    expect(siteContent.contact.defaultLineId).toBe('service')
+
+    const service = siteContent.contact.lines.find((line) => line.id === 'service')
+    expect(service).toMatchObject({
+      phoneE164: '+359876689736',
+      phoneDisplay: '0876 689 736',
+      label: 'Сервиз',
+      viberLabel: 'Viber — Сервиз',
+    })
+    expect(service?.phoneHref).toBe(buildPhoneHref('+359876689736'))
+    expect(service?.viberHref).toBe(buildViberHref('+359876689736'))
+  })
+
+  it('uses Mon-Fri hours only and Stefi Auto Gas brand', () => {
+    expect(siteContent.brandName).toBe('Stefi Auto Gas')
+    expect(siteContent.contact.hours).toEqual(['Понеделник - Петък: 9:00 - 18:00'])
+    expect(siteContent.contact.schemaOpeningHours).toEqual(['Mo-Fr 09:00-18:00'])
+    expect(siteContent.contact.address).toBe('гр. Ловеч, бул. Освобождение 7')
   })
 
   it('provides hero and split sections for every public page', () => {

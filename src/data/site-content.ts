@@ -29,12 +29,23 @@ export type SeoEntry = {
   description: string
 }
 
-export type ContactChannels = {
+export type ContactLineId = 'service' | 'inspections' | 'gas'
+
+export type ContactContext = 'default' | 'gtp' | 'remonti'
+
+export type ContactLine = {
+  id: ContactLineId
+  label: string
   phoneE164: string
   phoneDisplay: string
   phoneHref: string
   viberHref: string
   viberLabel: string
+}
+
+export type ContactChannels = {
+  lines: ContactLine[]
+  defaultLineId: ContactLineId
   address: string
   hours: string[]
   schemaOpeningHours: string[]
@@ -90,25 +101,62 @@ const imageAlts = {
   trust: 'Екип и обслужване в автосервиз Ловеч',
 } as const
 
-const phoneE164 = '+359888000000'
+
+function buildContactLine(
+  id: ContactLineId,
+  label: string,
+  phoneE164: string,
+  phoneDisplay: string,
+  viberLabel: string,
+): ContactLine {
+  return {
+    id,
+    label,
+    phoneE164,
+    phoneDisplay,
+    phoneHref: buildPhoneHref(phoneE164),
+    viberHref: buildViberHref(phoneE164),
+    viberLabel,
+  }
+}
+
+const contactLines = [
+  buildContactLine(
+    'service',
+    'Сервиз',
+    '+359876689736',
+    '0876 689 736',
+    'Viber — Сервиз',
+  ),
+  buildContactLine(
+    'inspections',
+    'Прегледи (ГТП)',
+    '+359876105674',
+    '0876 105 674',
+    'Viber — Прегледи (ГТП)',
+  ),
+  buildContactLine(
+    'gas',
+    'Газови системи',
+    '+359887816055',
+    '0887 816 055',
+    'Viber — Газови системи',
+  ),
+] satisfies ContactLine[]
 
 const contact = {
-  phoneE164,
-  phoneDisplay: '0888 000 000',
-  phoneHref: buildPhoneHref(phoneE164),
-  viberHref: buildViberHref(phoneE164),
-  viberLabel: 'Пишете ни във Viber',
-  address: 'гр. Ловеч, ул. Примерна 12',
-  hours: [
-    'Понеделник - Петък: 08:30 - 18:00',
-    'Събота: 09:00 - 13:00',
-  ],
-  schemaOpeningHours: ['Mo-Fr 08:30-18:00', 'Sa 09:00-13:00'],
-  mapEmbedUrl: 'https://www.google.com/maps?q=Ловеч&output=embed',
-  mapsLink: 'https://www.google.com/maps/search/?api=1&query=Ловеч',
+  lines: contactLines,
+  defaultLineId: 'service' as const,
+  address: 'гр. Ловеч, бул. Освобождение 7',
+  hours: ['Понеделник - Петък: 9:00 - 18:00'],
+  schemaOpeningHours: ['Mo-Fr 09:00-18:00'],
+  mapEmbedUrl:
+    'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4816.500206376381!2d24.7225143!3d43.159890999999995!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40abe75aa66b506f%3A0xc7f3c72f2bc99639!2sStefi%20Auto%20Gas!5e1!3m2!1sen!2sbg!4v1784727303042!5m2!1sen!2sbg',
+  mapsLink: 'https://maps.app.goo.gl/PYfpkTAFxMp2xjw79?g_st=ic',
 } satisfies ContactChannels
 
 const homeHero = {
+  eyebrow: 'Stefi Auto Gas',
   title: 'ГТП и автосервиз в Ловеч',
   description:
     'Годишен преглед, ремонти и обслужване — на едно място в Ловеч. Обадете се и ще ви кажем кога да дойдете.',
@@ -223,7 +271,7 @@ const pages = {
     ] satisfies SplitSectionContent[],
     stats: [
       { value: 'ГТП', label: 'Годишен технически преглед', icon: 'clipboard-check' },
-      { value: 'Пн–Сб', label: 'Работим, когато ви трябваме', icon: 'calendar-days' },
+      { value: 'Пн–Пт', label: '9:00–18:00', icon: 'calendar-days' },
       { value: 'Ловеч', label: 'Автосервиз с бързо обслужване', icon: 'map-pin' },
     ] satisfies StatItem[],
     ctaBand: sharedCtaBand,
@@ -299,9 +347,9 @@ export const siteContent = {
   locale: 'bg-BG',
   city: 'Ловеч',
   siteUrl: getSiteUrl(),
-  brandName: 'Автосервиз Ловеч',
+  brandName: 'Stefi Auto Gas',
   footer: {
-    tagline: 'ГТП и автосервиз в Ловеч',
+    tagline: 'ГТП, сервиз и газови системи в Ловеч',
     contactHeading: 'Адрес',
   } satisfies FooterContent,
   navigation: [
@@ -323,19 +371,19 @@ export const siteContent = {
   seo: {
     home: {
       title: 'Начало',
-      description: 'ГТП и автосервиз в Ловеч — запишете час по телефона.',
+      description: 'ГТП и автосервиз в Ловеч — Stefi Auto Gas. Запишете час по телефона.',
     },
     gtp: {
       title: 'ГТП',
-      description: 'Годишен технически преглед в Ловеч. Обадете се за час.',
+      description: 'Годишен технически преглед в Ловеч — Stefi Auto Gas. Обадете се за час.',
     },
     repairs: {
       title: 'Ремонти',
-      description: 'Ремонти и поддръжка на автомобили в Ловеч.',
+      description: 'Ремонти и поддръжка на автомобили в Ловеч — Stefi Auto Gas.',
     },
     contacts: {
       title: 'Контакти',
-      description: 'Контакти, адрес и работно време на автосервиза в Ловеч.',
+      description: 'Контакти, адрес и работно време на Stefi Auto Gas в Ловеч.',
     },
   } satisfies Record<'home' | 'gtp' | 'repairs' | 'contacts', SeoEntry>,
 } as const
