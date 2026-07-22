@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as RemontiRouteImport } from './routes/remonti'
 import { Route as KontaktiRouteImport } from './routes/kontakti'
 import { Route as GtpRouteImport } from './routes/gtp'
+import { Route as GazRouteImport } from './routes/gaz'
 import { Route as IndexRouteImport } from './routes/index'
 
 const RemontiRoute = RemontiRouteImport.update({
@@ -29,6 +30,11 @@ const GtpRoute = GtpRouteImport.update({
   path: '/gtp',
   getParentRoute: () => rootRouteImport,
 } as any)
+const GazRoute = GazRouteImport.update({
+  id: '/gaz',
+  path: '/gaz',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -37,12 +43,14 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/gaz': typeof GazRoute
   '/gtp': typeof GtpRoute
   '/kontakti': typeof KontaktiRoute
   '/remonti': typeof RemontiRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/gaz': typeof GazRoute
   '/gtp': typeof GtpRoute
   '/kontakti': typeof KontaktiRoute
   '/remonti': typeof RemontiRoute
@@ -50,20 +58,22 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/gaz': typeof GazRoute
   '/gtp': typeof GtpRoute
   '/kontakti': typeof KontaktiRoute
   '/remonti': typeof RemontiRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/gtp' | '/kontakti' | '/remonti'
+  fullPaths: '/' | '/gaz' | '/gtp' | '/kontakti' | '/remonti'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/gtp' | '/kontakti' | '/remonti'
-  id: '__root__' | '/' | '/gtp' | '/kontakti' | '/remonti'
+  to: '/' | '/gaz' | '/gtp' | '/kontakti' | '/remonti'
+  id: '__root__' | '/' | '/gaz' | '/gtp' | '/kontakti' | '/remonti'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  GazRoute: typeof GazRoute
   GtpRoute: typeof GtpRoute
   KontaktiRoute: typeof KontaktiRoute
   RemontiRoute: typeof RemontiRoute
@@ -92,6 +102,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GtpRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/gaz': {
+      id: '/gaz'
+      path: '/gaz'
+      fullPath: '/gaz'
+      preLoaderRoute: typeof GazRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -104,6 +121,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  GazRoute: GazRoute,
   GtpRoute: GtpRoute,
   KontaktiRoute: KontaktiRoute,
   RemontiRoute: RemontiRoute,
