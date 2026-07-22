@@ -21,6 +21,8 @@ export function resolveContactLine(context: ContactContext = 'default'): Contact
       return findLineById('inspections')
     case 'remonti':
       return findLineById('service')
+    case 'gas':
+      return findLineById('gas')
     case 'default':
       return getDefaultContactLine()
     default: {

@@ -17,6 +17,13 @@ describe('resolveContactLine', () => {
     expect(line.phoneDisplay).toBe('0876 105 674')
     expect(line.phoneHref).toBe('tel:+359876105674')
   })
+
+  it('maps gas context to the gas contact line', () => {
+    const line = resolveContactLine('gas')
+    expect(line.id).toBe('gas')
+    expect(line.phoneE164).toBe('+359887816055')
+    expect(line.phoneDisplay).toBe('0887 816 055')
+  })
 })
 
 describe('getDefaultContactLine', () => {
