@@ -16,7 +16,7 @@ import { buildLocalBusinessJsonLd } from '#/lib/seo'
 import appCss from '../styles.css?url'
 
 const homeSeo = siteContent.seo.home
-const defaultTitle = `${siteContent.brandName} | ГТП и ремонти в Ловеч`
+const defaultTitle = 'Stefi Auto Gas | ГТП и сервиз в Ловеч'
 
 export const Route = createRootRoute({
   head: () => ({

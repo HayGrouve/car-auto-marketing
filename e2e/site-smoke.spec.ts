@@ -7,13 +7,31 @@ test('homepage exposes the main call CTA and the site navigation', async ({ page
 
   await expect(page.getByTestId('site-nav')).toBeVisible()
   await expect(
-    page.getByRole('link', { name: /Обадете се|0888 000 000/ }).first(),
-  ).toHaveAttribute('href', /tel:/)
+    page.getByRole('link', { name: /Обадете се|0876 689 736/ }).first(),
+  ).toHaveAttribute('href', /tel:\+359876689736/)
 })
 
-test('contact page exposes the map container and working hours', async ({ page }) => {
-  await page.goto('/kontakti')
+test('gtp page uses inspections phone number', async ({ page }) => {
+  await page.goto('/gtp')
+  await expect(page.getByRole('link', { name: 'Обадете се' })).toHaveAttribute(
+    'href',
+    'tel:+359876105674',
+  )
+  await expect(page.getByRole('link', { name: '0876 105 674' }).first()).toHaveAttribute(
+    'href',
+    'tel:+359876105674',
+  )
+})
 
+test('contact page shows three phone links', async ({ page }) => {
+  await page.goto('/kontakti')
+  await expect(page.getByRole('link', { name: 'Сервиз: 0876 689 736' })).toBeVisible()
+  await expect(
+    page.getByRole('link', { name: 'Прегледи (ГТП): 0876 105 674' }),
+  ).toBeVisible()
+  await expect(
+    page.getByRole('link', { name: 'Газови системи: 0887 816 055' }),
+  ).toBeVisible()
   await expect(page.getByText(/Понеделник - Петък/).first()).toBeVisible()
   await expect(page.getByTestId('contact-map')).toBeVisible()
 })
