@@ -1,18 +1,51 @@
 import { describe, expect, it } from 'vitest'
+import { servicesCatalog, remontiGroups } from '#/data/services-catalog'
 import { buildPhoneHref, buildViberHref } from '#/lib/contact-links'
 import { siteContent } from '#/data/site-content'
 
 describe('siteContent', () => {
-  it('locks the site to Bulgarian Lovech marketing content and four public routes', () => {
+  it('locks the site to Bulgarian Lovech marketing content and five public routes', () => {
     expect(siteContent.locale).toBe('bg-BG')
     expect(siteContent.city).toBe('Ловеч')
     expect(siteContent.navigation.map((item) => item.to)).toEqual([
       '/',
       '/gtp',
+      '/gaz',
       '/remonti',
       '/kontakti',
     ])
     expect(siteContent.home.hero.title).toContain('Ловеч')
+  })
+
+  it('exposes five public routes including gaz', () => {
+    expect(siteContent.navigation.map((item) => item.to)).toEqual([
+      '/',
+      '/gtp',
+      '/gaz',
+      '/remonti',
+      '/kontakti',
+    ])
+  })
+
+  it('defines fifteen services with correct page counts', () => {
+    expect(servicesCatalog).toHaveLength(15)
+    expect(servicesCatalog.filter((s) => s.page === 'gaz')).toHaveLength(3)
+    expect(servicesCatalog.filter((s) => s.page === 'gtp')).toHaveLength(1)
+    expect(servicesCatalog.filter((s) => s.page === 'remonti')).toHaveLength(11)
+    expect(remontiGroups).toHaveLength(3)
+  })
+
+  it('uses fuel stat instead of map-pin on home', () => {
+    expect(siteContent.pages.home.stats[2]).toMatchObject({
+      value: 'LPG/CNG',
+      label: 'Монтаж и сервиз на газ',
+      icon: 'fuel',
+    })
+  })
+
+  it('does not export homeTrustPoints', () => {
+    expect('homeTrustPoints' in siteContent.home).toBe(false)
+    expect('trustPoints' in siteContent.home).toBe(false)
   })
 
   it('defines three contact lines with real Stefi Auto Gas numbers', () => {
@@ -42,13 +75,13 @@ describe('siteContent', () => {
     expect(siteContent.pages.home.sections.length).toBeGreaterThanOrEqual(2)
     expect(siteContent.pages.home.stats.length).toBe(3)
     expect(siteContent.pages.gtp.sections.length).toBeGreaterThanOrEqual(2)
-    expect(siteContent.pages.remonti.sections.length).toBeGreaterThanOrEqual(2)
+    expect(siteContent.pages.remonti.sections.length).toBe(0)
     expect(siteContent.pages.kontakti.sections.length).toBeGreaterThanOrEqual(1)
   })
 
   it('assigns a lucide icon key to every home stat', () => {
     const icons = siteContent.pages.home.stats.map((stat) => stat.icon)
-    expect(icons).toEqual(['clipboard-check', 'calendar-days', 'map-pin'])
+    expect(icons).toEqual(['clipboard-check', 'calendar-days', 'fuel'])
   })
 
   it('exposes footer tagline and contact heading', () => {
