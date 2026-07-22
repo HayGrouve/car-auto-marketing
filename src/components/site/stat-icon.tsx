@@ -1,11 +1,11 @@
-import { CalendarDays, ClipboardCheck, MapPin } from 'lucide-react'
+import { CalendarDays, ClipboardCheck, Fuel } from 'lucide-react'
 import type { StatIcon } from '#/data/site-content'
 import { cn } from '#/lib/utils'
 
 const iconMap = {
   'clipboard-check': ClipboardCheck,
   'calendar-days': CalendarDays,
-  'map-pin': MapPin,
+  fuel: Fuel,
 } as const
 
 type StatIconProps = {

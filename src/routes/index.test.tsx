@@ -16,7 +16,9 @@ describe('HomePage', () => {
       screen.getByRole('heading', { name: 'Годишен технически преглед' }),
     ).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Ремонти и поддръжка' })).toBeInTheDocument()
-    expect(screen.getByRole('heading', { name: 'Защо да изберете нас' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Газови системи' })).toBeInTheDocument()
+    expect(screen.queryByRole('heading', { name: 'Защо да изберете нас' })).not.toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Повече за газ' })).toHaveAttribute('href', '/gaz')
     expect(screen.getByText('ГТП')).toBeInTheDocument()
 
     const defaultLine = getDefaultContactLine()

@@ -8,7 +8,7 @@ import { siteContent } from '#/data/site-content'
 const homeSectionLinks = [
   { label: 'Повече за ГТП', href: '/gtp' },
   { label: 'Повече за ремонти', href: '/remonti' },
-  undefined,
+  { label: 'Повече за газ', href: '/gaz' },
 ] as const
 
 export function HomePage() {
