@@ -9,7 +9,7 @@ export function RemontiPage() {
 
   return (
     <>
-      <HeroSection content={hero} />
+      <HeroSection contactContext="remonti" content={hero} />
       {sections.map((section, index) => (
         <Reveal key={section.title}>
           <SplitSection
@@ -21,7 +21,7 @@ export function RemontiPage() {
         </Reveal>
       ))}
       <Reveal>
-        <CtaBand subtitle={ctaBand.description} title={ctaBand.title} />
+        <CtaBand contactContext="remonti" subtitle={ctaBand.description} title={ctaBand.title} />
       </Reveal>
     </>
   )

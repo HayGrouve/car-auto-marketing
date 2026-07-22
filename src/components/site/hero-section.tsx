@@ -1,6 +1,6 @@
 import { Link } from '@tanstack/react-router'
-import type { HeroContent } from '#/data/site-content'
-import { siteContent } from '#/data/site-content'
+import type { ContactContext, HeroContent } from '#/data/site-content'
+import { resolveContactLine } from '#/lib/contact-context'
 
 type Cta = {
   label: string
@@ -9,6 +9,7 @@ type Cta = {
 
 type HeroSectionProps = {
   content: HeroContent
+  contactContext?: ContactContext
   secondaryCta?: Cta
 }
 
@@ -34,9 +35,16 @@ function HeroCta({ cta, className }: { cta: Cta; className: string }) {
   )
 }
 
-export function HeroSection({ content, secondaryCta }: HeroSectionProps) {
+export function HeroSection({
+  content,
+  contactContext = 'default',
+  secondaryCta,
+}: HeroSectionProps) {
   const primaryCta: Cta | null = content.primaryCtaLabel
-    ? { label: content.primaryCtaLabel, href: siteContent.contact.phoneHref }
+    ? {
+        label: content.primaryCtaLabel,
+        href: resolveContactLine(contactContext).phoneHref,
+      }
     : null
 
   return (

@@ -1,10 +1,12 @@
 import { ContactChannelLink } from '#/components/site/contact-channel-link'
+import type { ContactContext } from '#/data/site-content'
 import { cn } from '#/lib/utils'
 
 type CtaBandProps = {
   title: string
   subtitle?: string
   tone?: 'dark' | 'accent'
+  contactContext?: ContactContext
 }
 
 const toneClasses = {
@@ -18,7 +20,12 @@ const toneClasses = {
   },
 } as const
 
-export function CtaBand({ title, subtitle, tone = 'accent' }: CtaBandProps) {
+export function CtaBand({
+  title,
+  subtitle,
+  tone = 'accent',
+  contactContext = 'default',
+}: CtaBandProps) {
   const styles = toneClasses[tone]
 
   return (
@@ -31,8 +38,8 @@ export function CtaBand({ title, subtitle, tone = 'accent' }: CtaBandProps) {
           ) : null}
         </div>
         <div className="flex flex-wrap gap-3">
-          <ContactChannelLink channel="phone" variant="inverse-solid" />
-          <ContactChannelLink channel="viber" variant="inverse-outline" />
+          <ContactChannelLink channel="phone" context={contactContext} variant="inverse-solid" />
+          <ContactChannelLink channel="viber" context={contactContext} variant="inverse-outline" />
         </div>
       </div>
     </section>

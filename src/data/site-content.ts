@@ -282,6 +282,7 @@ const pages = {
       description: gtp.description,
       image: '/images/gtp-section.png',
       imageAlt: imageAlts.gtp,
+      primaryCtaLabel: 'Обадете се',
     },
     sections: [
       {
@@ -307,6 +308,7 @@ const pages = {
       description: repairs.description,
       image: '/images/repairs-section.png',
       imageAlt: imageAlts.repairs,
+      primaryCtaLabel: 'Обадете се',
     },
     sections: [
       {

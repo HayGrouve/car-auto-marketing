@@ -9,7 +9,7 @@ export function GtpPage() {
 
   return (
     <>
-      <HeroSection content={hero} />
+      <HeroSection contactContext="gtp" content={hero} />
       {sections.map((section, index) => (
         <Reveal key={section.title}>
           <SplitSection
@@ -21,7 +21,7 @@ export function GtpPage() {
         </Reveal>
       ))}
       <Reveal>
-        <CtaBand subtitle={ctaBand.description} title={ctaBand.title} />
+        <CtaBand contactContext="gtp" subtitle={ctaBand.description} title={ctaBand.title} />
       </Reveal>
     </>
   )
