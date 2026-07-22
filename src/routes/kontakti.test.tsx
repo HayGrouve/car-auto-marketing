@@ -1,9 +1,10 @@
 import { render, screen } from '@testing-library/react'
 import { siteContent } from '#/data/site-content'
+import { getAllContactLines } from '#/lib/contact-context'
 import { KontaktiPage } from '#/pages/kontakti-page'
 
 describe('KontaktiPage', () => {
-  it('renders hero, contact details, phone and viber links, and the map iframe', () => {
+  it('renders hero, all three contact lines, and the map iframe', () => {
     render(<KontaktiPage />)
 
     expect(
@@ -11,12 +12,20 @@ describe('KontaktiPage', () => {
     ).toBeInTheDocument()
     expect(screen.getByText(siteContent.contact.address)).toBeInTheDocument()
     expect(screen.getByText(siteContent.contact.hours[0])).toBeInTheDocument()
-    expect(
-      screen.getAllByRole('link', { name: siteContent.contact.phoneDisplay })[0],
-    ).toHaveAttribute('href', siteContent.contact.phoneHref)
-    expect(
-      screen.getAllByRole('link', { name: siteContent.contact.viberLabel })[0],
-    ).toHaveAttribute('href', siteContent.contact.viberHref)
+
+    const lines = getAllContactLines()
+    expect(lines).toHaveLength(3)
+
+    for (const line of lines) {
+      expect(
+        screen.getByRole('link', { name: `${line.label}: ${line.phoneDisplay}` }),
+      ).toHaveAttribute('href', line.phoneHref)
+      expect(screen.getByRole('link', { name: line.viberLabel })).toHaveAttribute(
+        'href',
+        line.viberHref,
+      )
+    }
+
     expect(screen.getByTitle('Карта до сервиза')).toBeInTheDocument()
 
     const mapsLink = screen.getByRole('link', { name: 'Отвори в Google Maps' })

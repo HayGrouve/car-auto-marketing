@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import { Clock, ExternalLink, MapPin, Phone } from 'lucide-react'
 import { siteContent } from '#/data/site-content'
+import { getAllContactLines } from '#/lib/contact-context'
 import { ViberIcon } from '#/components/site/viber-icon'
 
 type ContactRowProps = {
@@ -22,33 +23,36 @@ function ContactRow({ label, icon, children }: ContactRowProps) {
 }
 
 export function ContactDetails() {
-  const { phoneHref, phoneDisplay, viberHref, viberLabel, address, hours, mapsLink } =
-    siteContent.contact
+  const { address, hours, mapsLink } = siteContent.contact
+  const lines = getAllContactLines()
 
   return (
     <div className="space-y-8 text-[#0a0a0a]">
-      <ContactRow label="Телефон">
-        <a
-          className="inline-flex items-center gap-2 text-lg font-bold text-[#1e3a8a] underline-offset-4 hover:text-[#1e40af] hover:underline"
-          href={phoneHref}
-        >
-          <Phone aria-hidden className="size-5 shrink-0" />
-          {phoneDisplay}
-        </a>
-      </ContactRow>
-
-      <ContactRow label="Viber">
-        <div className="space-y-1">
+      {lines.map((line) => (
+        <div className="space-y-3" key={line.id}>
+          <p className="text-xs font-bold uppercase tracking-widest text-[#525252]">
+            {line.label}
+          </p>
           <a
-            className="inline-flex items-center gap-2 text-lg font-bold text-[#7360f2] underline-offset-4 hover:text-[#5a4fd1] hover:underline"
-            href={viberHref}
+            aria-label={`${line.label}: ${line.phoneDisplay}`}
+            className="inline-flex items-center gap-2 text-lg font-bold text-[#1e3a8a] underline-offset-4 hover:text-[#1e40af] hover:underline"
+            href={line.phoneHref}
           >
-            <ViberIcon className="size-5 shrink-0" />
-            {viberLabel}
+            <Phone aria-hidden className="size-5 shrink-0" />
+            {line.phoneDisplay}
           </a>
-          <p className="text-sm text-[#525252]">Бързо съобщение</p>
+          <div className="space-y-1">
+            <a
+              className="inline-flex items-center gap-2 text-lg font-bold text-[#7360f2] underline-offset-4 hover:text-[#5a4fd1] hover:underline"
+              href={line.viberHref}
+            >
+              <ViberIcon className="size-5 shrink-0" />
+              {line.viberLabel}
+            </a>
+            <p className="text-sm text-[#525252]">Бързо съобщение</p>
+          </div>
         </div>
-      </ContactRow>
+      ))}
 
       <ContactRow
         icon={<MapPin aria-hidden className="size-4 shrink-0" />}

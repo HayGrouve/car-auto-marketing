@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import { SiteFooter } from '#/components/site/site-footer'
 import { siteContent } from '#/data/site-content'
+import { getDefaultContactLine } from '#/lib/contact-context'
 
 function expectFooterNavLink(name: string, href: string) {
   const footerNav = screen.getByRole('navigation', { name: 'Футър навигация' })
@@ -31,17 +32,14 @@ describe('SiteFooter', () => {
     ).toBeInTheDocument()
     expect(screen.getByText(siteContent.contact.address)).toBeInTheDocument()
     expect(screen.getByText(siteContent.contact.hours[0])).toBeInTheDocument()
-    expect(screen.getByText(siteContent.contact.hours[1])).toBeInTheDocument()
+    expect(screen.queryByText(/Събота/)).not.toBeInTheDocument()
 
-    const phoneLink = screen.getByRole('link', {
-      name: siteContent.contact.phoneDisplay,
-    })
-    expect(phoneLink).toHaveAttribute('href', siteContent.contact.phoneHref)
+    const defaultLine = getDefaultContactLine()
+    const phoneLink = screen.getByRole('link', { name: defaultLine.phoneDisplay })
+    expect(phoneLink).toHaveAttribute('href', defaultLine.phoneHref)
 
-    const viberLink = screen.getByRole('link', {
-      name: siteContent.contact.viberLabel,
-    })
-    expect(viberLink).toHaveAttribute('href', siteContent.contact.viberHref)
+    const viberLink = screen.getByRole('link', { name: 'Пишете ни във Viber' })
+    expect(viberLink).toHaveAttribute('href', defaultLine.viberHref)
 
     const mapsLink = screen.getByRole('link', { name: 'Отвори в Google Maps' })
     expect(mapsLink).toHaveAttribute('href', siteContent.contact.mapsLink)
