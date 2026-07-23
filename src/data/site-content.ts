@@ -102,7 +102,7 @@ export type PageContent = {
   ctaBand: PageCta
 }
 
-const imageAlts = {
+export const imageAlts = {
   shop: 'Автосервиз в Ловеч — работилница',
   gtp: 'Годишен технически преглед в автосервиз',
   repairs: 'Ремонт и поддръжка на автомобил в сервиз',
