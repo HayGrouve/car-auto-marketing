@@ -2,6 +2,7 @@ import { CtaBand } from '#/components/site/cta-band'
 import { CatalogSplitSection } from '#/components/site/catalog-split-section'
 import { HeroSection } from '#/components/site/hero-section'
 import { Reveal } from '#/components/site/reveal'
+import { ServiceCatalog } from '#/components/site/service-catalog'
 import { gazSplitImages } from '#/data/catalog-split-images'
 import { servicesCatalog } from '#/data/services-catalog'
 import { siteContent } from '#/data/site-content'
@@ -27,6 +28,13 @@ export function GazPage() {
           />
         </Reveal>
       ))}
+      <Reveal>
+        <ServiceCatalog
+          heading="Газови услуги — подробности"
+          services={services}
+          variant="flat"
+        />
+      </Reveal>
       <Reveal>
         <CtaBand contactContext="gas" subtitle={ctaBand.description} title={ctaBand.title} />
       </Reveal>

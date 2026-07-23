@@ -3,6 +3,7 @@ import type { Service } from '#/data/site-content'
 type ServiceExpandableItemProps = {
   service: Service
   titleAs?: 'h2' | 'h3'
+  showDetails?: boolean
 }
 
 const titleClasses = {
@@ -14,7 +15,11 @@ function splitDetails(details: string): string[] {
   return details.split('\n\n').filter((part) => part.trim().length > 0)
 }
 
-export function ServiceExpandableItem({ service, titleAs = 'h3' }: ServiceExpandableItemProps) {
+export function ServiceExpandableItem({
+  service,
+  titleAs = 'h3',
+  showDetails = true,
+}: ServiceExpandableItemProps) {
   const titleId = `service-${service.id}`
   const TitleTag = titleAs
 
@@ -24,7 +29,7 @@ export function ServiceExpandableItem({ service, titleAs = 'h3' }: ServiceExpand
         {service.title}
       </TitleTag>
       <p className="text-base leading-7 text-[#525252]">{service.summary}</p>
-      {service.details ? (
+      {showDetails && service.details ? (
         <details className="group">
           <summary className="cursor-pointer text-sm font-bold text-[#1e3a8a] hover:text-[#1e40af]">
             Повече информация

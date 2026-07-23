@@ -46,7 +46,11 @@ export function CatalogSplitSection(props: CatalogSplitSectionProps) {
           ) : null}
           {props.variant === 'service' ? (
             <ul className="space-y-8">
-              <ServiceExpandableItem service={props.service} titleAs="h2" />
+              <ServiceExpandableItem
+                service={props.service}
+                showDetails={false}
+                titleAs="h2"
+              />
             </ul>
           ) : (
             <>
@@ -59,11 +63,6 @@ export function CatalogSplitSection(props: CatalogSplitSectionProps) {
               <p className="mt-4 max-w-prose text-base leading-7 text-[#525252]">
                 {props.group.intro}
               </p>
-              <ul className="mt-8 space-y-8">
-                {props.group.services.map((service) => (
-                  <ServiceExpandableItem key={service.id} service={service} />
-                ))}
-              </ul>
             </>
           )}
         </div>

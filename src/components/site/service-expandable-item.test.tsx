@@ -43,4 +43,21 @@ describe('ServiceExpandableItem', () => {
     expect(heading.className).toContain('font-extrabold')
     expect(heading.className).toContain('md:text-4xl')
   })
+
+  it('hides expand UI when showDetails is false', () => {
+    render(
+      <ServiceExpandableItem
+        service={{
+          id: 'w',
+          title: 'Title W',
+          summary: 'Summary W',
+          page: 'gaz',
+          details: 'Hidden detail.',
+        }}
+        showDetails={false}
+      />,
+    )
+    expect(screen.queryByText('Повече информация')).not.toBeInTheDocument()
+    expect(screen.queryByText('Hidden detail.')).not.toBeInTheDocument()
+  })
 })

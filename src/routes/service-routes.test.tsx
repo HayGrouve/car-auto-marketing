@@ -32,7 +32,7 @@ describe('service routes', () => {
     ).toHaveAttribute('href', gtpLine.viberHref)
   })
 
-  it('renders the gaz page with split rows, section numbers, and gas contact line', () => {
+  it('renders the gaz page with split rows, catalog details, and gas contact line', () => {
     render(<GazPage />)
     const gasLine = resolveContactLine('gas')
     const gazServices = servicesCatalog.filter((service) => service.page === 'gaz')
@@ -40,7 +40,9 @@ describe('service routes', () => {
     expect(
       screen.getByRole('heading', { name: siteContent.pages.gaz.hero.title }),
     ).toBeInTheDocument()
-    expect(screen.queryByRole('heading', { name: 'Газови услуги' })).not.toBeInTheDocument()
+    expect(
+      screen.getByRole('heading', { name: 'Газови услуги — подробности', level: 2 }),
+    ).toBeInTheDocument()
     expect(screen.getByText('01')).toBeInTheDocument()
     expect(screen.getByText('02')).toBeInTheDocument()
     expect(screen.getByText('03')).toBeInTheDocument()
@@ -48,6 +50,9 @@ describe('service routes', () => {
     for (const service of gazServices) {
       expect(
         screen.getByRole('heading', { name: service.title, level: 2 }),
+      ).toBeInTheDocument()
+      expect(
+        screen.getByRole('heading', { name: service.title, level: 3 }),
       ).toBeInTheDocument()
     }
 
@@ -57,11 +62,14 @@ describe('service routes', () => {
     )
   })
 
-  it('renders the repairs hero, group split rows, all services, and contact links', () => {
+  it('renders the repairs hero, group split rows, catalog details, and contact links', () => {
     render(<RemontiPage />)
 
     expect(
       screen.getByRole('heading', { name: siteContent.pages.remonti.hero.title }),
+    ).toBeInTheDocument()
+    expect(
+      screen.getByRole('heading', { name: 'Ремонти — подробности', level: 2 }),
     ).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Диагностика и поддръжка', level: 2 })).toBeInTheDocument()
     expect(

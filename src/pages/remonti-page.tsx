@@ -2,14 +2,16 @@ import { CtaBand } from '#/components/site/cta-band'
 import { CatalogSplitSection } from '#/components/site/catalog-split-section'
 import { HeroSection } from '#/components/site/hero-section'
 import { Reveal } from '#/components/site/reveal'
+import { ServiceCatalog } from '#/components/site/service-catalog'
 import { remontiSplitImages } from '#/data/catalog-split-images'
 import { remontiGroups, servicesCatalog } from '#/data/services-catalog'
 import { siteContent } from '#/data/site-content'
-import { getRemontiGroupsWithServices } from '#/lib/services'
+import { getRemontiGroupsWithServices, getServicesForPage } from '#/lib/services'
 
 export function RemontiPage() {
   const { hero, ctaBand } = siteContent.pages.remonti
   const groups = getRemontiGroupsWithServices(servicesCatalog, remontiGroups)
+  const services = getServicesForPage('remonti', servicesCatalog)
 
   return (
     <>
@@ -27,6 +29,13 @@ export function RemontiPage() {
           />
         </Reveal>
       ))}
+      <Reveal>
+        <ServiceCatalog
+          heading="Ремонти — подробности"
+          services={services}
+          variant="flat"
+        />
+      </Reveal>
       <Reveal>
         <CtaBand contactContext="remonti" subtitle={ctaBand.description} title={ctaBand.title} />
       </Reveal>

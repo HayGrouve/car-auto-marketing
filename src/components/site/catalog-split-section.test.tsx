@@ -21,7 +21,7 @@ const group = {
 }
 
 describe('CatalogSplitSection', () => {
-  it('renders service variant with ul wrapper, h2 title, summary, expand, number, and image alt', () => {
+  it('renders service variant with ul wrapper, h2 title, summary, number, and image alt', () => {
     const { container } = render(
       <CatalogSplitSection
         image="/images/repairs-section.png"
@@ -37,7 +37,7 @@ describe('CatalogSplitSection', () => {
     expect(screen.getByText('01')).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Gas Service Title', level: 2 })).toBeInTheDocument()
     expect(screen.getByText('Gas summary text')).toBeInTheDocument()
-    expect(screen.getByText('Повече информация')).toBeInTheDocument()
+    expect(screen.queryByText('Повече информация')).not.toBeInTheDocument()
     expect(container.querySelector('ul.space-y-8')).toBeInTheDocument()
     expect(screen.getByRole('img', { name: 'Gas alt text' })).toHaveAttribute(
       'src',
@@ -45,7 +45,7 @@ describe('CatalogSplitSection', () => {
     )
   })
 
-  it('renders group variant with h2, max-w-prose intro, all services as h3, and aria-labelledby', () => {
+  it('renders group variant with h2, max-w-prose intro, and aria-labelledby', () => {
     const { container } = render(
       <CatalogSplitSection
         group={group}
@@ -65,9 +65,8 @@ describe('CatalogSplitSection', () => {
     )
     const intro = screen.getByText('Group intro paragraph')
     expect(intro.className).toContain('max-w-prose')
-    expect(screen.getByRole('heading', { name: 'Service A', level: 3 })).toBeInTheDocument()
-    expect(screen.getByRole('heading', { name: 'Service B', level: 3 })).toBeInTheDocument()
-    expect(container.querySelector('ul.mt-8.space-y-8')).toBeInTheDocument()
+    expect(screen.queryByRole('heading', { name: 'Service A', level: 3 })).not.toBeInTheDocument()
+    expect(container.querySelector('ul.mt-8.space-y-8')).not.toBeInTheDocument()
   })
 
   it('applies muted background and reverse grid order classes', () => {
