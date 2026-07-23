@@ -72,12 +72,12 @@ describe('assertCompleteSplitImageMaps', () => {
   it('validates real maps at module load', () => {
     const gazIds = servicesCatalog.filter((s) => s.page === 'gaz').map((s) => s.id)
     for (const id of gazIds) {
-      expect(gazSplitImages[id]?.image).toMatch(/^\/images\//)
-      expect(gazSplitImages[id]?.imageAlt.length).toBeGreaterThan(0)
+      expect(gazSplitImages[id].image).toMatch(/^\/images\//)
+      expect(gazSplitImages[id].imageAlt.length).toBeGreaterThan(0)
     }
     for (const group of remontiGroups) {
-      expect(remontiSplitImages[group.id]?.image).toMatch(/^\/images\//)
-      expect(remontiSplitImages[group.id]?.imageAlt.length).toBeGreaterThan(0)
+      expect(remontiSplitImages[group.id].image).toMatch(/^\/images\//)
+      expect(remontiSplitImages[group.id].imageAlt.length).toBeGreaterThan(0)
     }
   })
 })
