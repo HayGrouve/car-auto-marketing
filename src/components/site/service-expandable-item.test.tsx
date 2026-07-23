@@ -29,4 +29,18 @@ describe('ServiceExpandableItem', () => {
     expect(screen.getByText('Para one.')).toBeInTheDocument()
     expect(screen.getByText('· Bullet line')).toBeInTheDocument()
   })
+
+  it('renders h2 with split-section title classes when titleAs is h2', () => {
+    render(
+      <ServiceExpandableItem
+        service={{ id: 'z', title: 'Title Z', summary: 'Summary Z', page: 'gaz' }}
+        titleAs="h2"
+      />,
+    )
+    const heading = screen.getByRole('heading', { name: 'Title Z', level: 2 })
+    expect(heading).toHaveAttribute('id', 'service-z')
+    expect(heading.className).toContain('text-3xl')
+    expect(heading.className).toContain('font-extrabold')
+    expect(heading.className).toContain('md:text-4xl')
+  })
 })
