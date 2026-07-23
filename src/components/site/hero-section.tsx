@@ -69,7 +69,7 @@ export function HeroSection({
               {content.eyebrow}
             </p>
           ) : null}
-          <h1 className="rise-in text-4xl font-extrabold tracking-tight text-[#0a0a0a] md:text-5xl">
+          <h1 className="rise-in text-4xl font-extrabold tracking-wide text-[#0a0a0a] md:text-5xl">
             {content.title}
           </h1>
           <p className="rise-in rise-in-delay-120 text-base leading-7 text-[#525252] md:text-lg">
