@@ -88,4 +88,8 @@ describe('siteContent', () => {
     expect(siteContent.footer.tagline).toContain('Ловеч')
     expect(siteContent.footer.contactHeading).toBe('Адрес')
   })
+
+  it('loads catalog split image maps without throwing', async () => {
+    await expect(import('#/data/catalog-split-images')).resolves.toBeDefined()
+  })
 })
