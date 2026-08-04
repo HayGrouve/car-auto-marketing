@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { siteContent } from '#/data/site-content'
-import { getDefaultContactLine } from '#/lib/contact-context'
+import { getDefaultContactLine } from '#/lib/contact-surface'
 import { buildLocalBusinessJsonLd, buildSeoHead } from '#/lib/seo'
 
 describe('buildSeoHead', () => {

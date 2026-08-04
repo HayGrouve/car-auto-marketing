@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
-import { buildPhoneHref, buildViberHref } from '#/lib/contact-links'
+import { buildPhoneHref, buildViberHref } from '#/lib/contact-hrefs'
 
-describe('contact-links', () => {
+describe('contact-hrefs', () => {
   it('builds tel href from E.164', () => {
     expect(buildPhoneHref('+359888000000')).toBe('tel:+359888000000')
   })

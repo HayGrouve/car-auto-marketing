@@ -3,7 +3,7 @@ import {
   getAllContactLines,
   getDefaultContactLine,
   resolveContactLine,
-} from '#/lib/contact-context'
+} from '#/lib/contact-surface'
 
 describe('resolveContactLine', () => {
   it('maps default and remonti to service, gtp to inspections', () => {
@@ -18,8 +18,8 @@ describe('resolveContactLine', () => {
     expect(line.phoneHref).toBe('tel:+359876105674')
   })
 
-  it('maps gas context to the gas contact line', () => {
-    const line = resolveContactLine('gas')
+  it('maps gaz context to the gas contact line', () => {
+    const line = resolveContactLine('gaz')
     expect(line.id).toBe('gas')
     expect(line.phoneE164).toBe('+359887816055')
     expect(line.phoneDisplay).toBe('0887 816 055')

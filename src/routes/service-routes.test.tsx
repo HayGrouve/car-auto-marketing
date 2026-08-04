@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import { servicesCatalog } from '#/data/services-catalog'
 import { siteContent } from '#/data/site-content'
-import { resolveContactLine } from '#/lib/contact-context'
+import { resolveContactLine } from '#/lib/contact-surface'
 import { GazPage } from '#/pages/gaz-page'
 import { GtpPage } from '#/pages/gtp-page'
 import { RemontiPage } from '#/pages/remonti-page'
@@ -34,7 +34,7 @@ describe('service routes', () => {
 
   it('renders the gaz page with split rows, catalog details, and gas contact line', () => {
     render(<GazPage />)
-    const gasLine = resolveContactLine('gas')
+    const gasLine = resolveContactLine('gaz')
     const gazServices = servicesCatalog.filter((service) => service.page === 'gaz')
 
     expect(

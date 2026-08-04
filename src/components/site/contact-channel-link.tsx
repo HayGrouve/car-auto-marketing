@@ -1,12 +1,15 @@
 import { Phone } from 'lucide-react'
-import type { ContactContext } from '#/data/site-content'
-import { resolveContactLine } from '#/lib/contact-context'
+import type { ContactContext, ContactLine } from '#/data/site-content'
+import {
+  COMPACT_VIBER_LABEL,
+  contactPhoneLabel,
+  contactViberLabel,
+  resolveContactLine,
+} from '#/lib/contact-surface'
 import { cn } from '#/lib/utils'
 import { ViberIcon } from '#/components/site/viber-icon'
 
-const COMPACT_VIBER_LABEL = 'Пишете ни във Viber'
-
-type Props = {
+type ContactChannelLinkProps = {
   channel: 'phone' | 'viber'
   context?: ContactContext
   variant: 'solid' | 'outline' | 'inverse-solid' | 'inverse-outline'
@@ -14,7 +17,7 @@ type Props = {
   onClick?: () => void
 }
 
-const variantClasses: Record<Props['variant'], string> = {
+const variantClasses: Record<ContactChannelLinkProps['variant'], string> = {
   solid: 'bg-[#1e3a8a] text-white hover:bg-[#1e40af] hover:text-white',
   outline: 'border border-[#7360f2] text-[#7360f2] hover:bg-[#7360f2]/5',
   'inverse-solid': 'bg-white text-[#0a0a0a] hover:bg-neutral-100',
@@ -27,11 +30,11 @@ export function ContactChannelLink({
   variant,
   className,
   onClick,
-}: Props) {
+}: ContactChannelLinkProps) {
   const line = resolveContactLine(context)
   const isPhone = channel === 'phone'
   const href = isPhone ? line.phoneHref : line.viberHref
-  const label = isPhone ? line.phoneDisplay : COMPACT_VIBER_LABEL
+  const label = isPhone ? contactPhoneLabel(line) : contactViberLabel(line, true)
 
   return (
     <a
@@ -48,3 +51,42 @@ export function ContactChannelLink({
     </a>
   )
 }
+
+type ContactLineLinkProps = {
+  line: ContactLine
+  channel: 'phone' | 'viber'
+  compactViber?: boolean
+  className?: string
+  iconClassName?: string
+  'aria-label'?: string
+}
+
+export function ContactLineLink({
+  line,
+  channel,
+  compactViber = false,
+  className,
+  iconClassName,
+  'aria-label': ariaLabel,
+}: ContactLineLinkProps) {
+  const isPhone = channel === 'phone'
+  const href = isPhone ? line.phoneHref : line.viberHref
+  const label = isPhone ? contactPhoneLabel(line) : contactViberLabel(line, compactViber)
+
+  return (
+    <a
+      aria-label={ariaLabel}
+      className={className}
+      href={href}
+    >
+      {isPhone ? (
+        <Phone aria-hidden className={iconClassName} />
+      ) : (
+        <ViberIcon className={iconClassName} />
+      )}
+      {label}
+    </a>
+  )
+}
+
+export { COMPACT_VIBER_LABEL }

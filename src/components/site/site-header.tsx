@@ -2,6 +2,7 @@ import { Link } from '@tanstack/react-router'
 import { Menu } from 'lucide-react'
 import { useState } from 'react'
 import { ContactChannelLink } from '#/components/site/contact-channel-link'
+import { SiteLogo } from '#/components/site/site-logo'
 import { Button } from '#/components/ui/button'
 import {
   Sheet,
@@ -70,12 +71,7 @@ export function SiteHeader() {
   return (
     <header className="border-b border-[#e5e5e5] bg-white px-6 py-4 lg:px-10">
       <div className="flex items-center justify-between gap-4">
-        <Link
-          className="font-semibold uppercase tracking-wide text-neutral-900"
-          to="/"
-        >
-          {siteContent.brandName}
-        </Link>
+        <SiteLogo />
 
         <div className="hidden items-center gap-8 lg:flex">
           <SiteNavigation className="flex items-center gap-6" />
@@ -102,8 +98,8 @@ export function SiteHeader() {
             </SheetTrigger>
             <SheetContent className="rounded-none" showCloseButton>
               <SheetHeader>
-                <SheetTitle className="text-left uppercase">
-                  {siteContent.brandName}
+                <SheetTitle className="text-left">
+                  <SiteLogo linkToHome={false} />
                 </SheetTitle>
               </SheetHeader>
               <SiteNavigation

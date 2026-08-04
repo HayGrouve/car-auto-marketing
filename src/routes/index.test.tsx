@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import { siteContent } from '#/data/site-content'
-import { getDefaultContactLine } from '#/lib/contact-context'
+import { getDefaultContactLine } from '#/lib/contact-surface'
 import { HomePage } from '#/pages/home-page'
 
 const COMPACT_VIBER_LABEL = 'Пишете ни във Viber'

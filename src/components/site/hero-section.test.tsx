@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import { HeroSection } from '#/components/site/hero-section'
 import { siteContent } from '#/data/site-content'
-import { resolveContactLine } from '#/lib/contact-context'
+import { resolveContactLine } from '#/lib/contact-surface'
 
 describe('HeroSection', () => {
   it('renders hero title and default primary CTA', () => {

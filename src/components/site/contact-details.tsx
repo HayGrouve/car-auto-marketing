@@ -1,8 +1,8 @@
 import type { ReactNode } from 'react'
-import { Clock, ExternalLink, MapPin, Phone } from 'lucide-react'
+import { Clock, ExternalLink, MapPin } from 'lucide-react'
+import { ContactLineLink } from '#/components/site/contact-channel-link'
 import { siteContent } from '#/data/site-content'
-import { getAllContactLines } from '#/lib/contact-context'
-import { ViberIcon } from '#/components/site/viber-icon'
+import { getAllContactLines } from '#/lib/contact-surface'
 
 type ContactRowProps = {
   label: string
@@ -34,21 +34,19 @@ export function ContactDetails() {
             {line.label}
           </p>
           <div className="flex flex-col gap-2">
-            <a
+            <ContactLineLink
               aria-label={`${line.label}: ${line.phoneDisplay}`}
+              channel="phone"
               className="flex w-fit items-center gap-2 text-lg font-bold text-[#1e3a8a] underline-offset-4 hover:text-[#1e40af] hover:underline"
-              href={line.phoneHref}
-            >
-              <Phone aria-hidden className="size-5 shrink-0" />
-              {line.phoneDisplay}
-            </a>
-            <a
+              iconClassName="size-5 shrink-0"
+              line={line}
+            />
+            <ContactLineLink
+              channel="viber"
               className="flex w-fit items-center gap-2 text-lg font-bold text-[#7360f2] underline-offset-4 hover:text-[#5a4fd1] hover:underline"
-              href={line.viberHref}
-            >
-              <ViberIcon className="size-5 shrink-0" />
-              {line.viberLabel}
-            </a>
+              iconClassName="size-5 shrink-0"
+              line={line}
+            />
           </div>
         </div>
       ))}

@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import { ContactChannelLink } from '#/components/site/contact-channel-link'
-import { resolveContactLine } from '#/lib/contact-context'
+import { resolveContactLine } from '#/lib/contact-surface'
 
 const COMPACT_VIBER_LABEL = 'Пишете ни във Viber'
 

@@ -20,6 +20,8 @@ export default [
       'prettier.config.js',
       '.playwright-browsers/**',
       '.local-libs/**',
+      '.nitro/**',
+      '.output/**',
     ],
   },
 ]

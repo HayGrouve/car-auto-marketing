@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import { siteContent } from '#/data/site-content'
-import { getAllContactLines } from '#/lib/contact-context'
+import { getAllContactLines } from '#/lib/contact-surface'
 import { KontaktiPage } from '#/pages/kontakti-page'
 
 describe('KontaktiPage', () => {

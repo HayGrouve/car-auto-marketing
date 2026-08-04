@@ -1,6 +1,6 @@
 import { siteContent } from '#/data/site-content'
 import type { SitePath } from '#/data/site-content'
-import { getDefaultContactLine } from '#/lib/contact-context'
+import { getDefaultContactLine } from '#/lib/contact-surface'
 
 type BuildSeoHeadArgs = {
   title: string

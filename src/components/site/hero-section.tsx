@@ -1,6 +1,6 @@
 import { Link } from '@tanstack/react-router'
 import type { ContactContext, HeroContent } from '#/data/site-content'
-import { resolveContactLine } from '#/lib/contact-context'
+import { resolveContactLine } from '#/lib/contact-surface'
 
 type Cta = {
   label: string

@@ -10,6 +10,10 @@ const config = defineConfig({
     port: 3000,
     strictPort: true,
   },
+  preview: {
+    port: 3000,
+    strictPort: true,
+  },
   resolve: { tsconfigPaths: true },
   plugins: [tanstackStart(), nitro(), tailwindcss(), viteReact()],
 })

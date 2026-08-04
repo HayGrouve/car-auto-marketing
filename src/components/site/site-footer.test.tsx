@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import { SiteFooter } from '#/components/site/site-footer'
 import { siteContent } from '#/data/site-content'
-import { getDefaultContactLine } from '#/lib/contact-context'
+import { getDefaultContactLine } from '#/lib/contact-surface'
 
 function expectFooterNavLink(name: string, href: string) {
   const footerNav = screen.getByRole('navigation', { name: 'Футър навигация' })

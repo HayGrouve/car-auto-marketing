@@ -1,69 +1,55 @@
-Welcome to your new TanStack Start app! 
+# Stefi Auto Gas — marketing site
 
-# Getting Started
+Bulgarian marketing website for [Stefi Auto Gas](https://stefi-gas.com): car service, GTP inspections, LPG/CNG gas systems, and repairs. Built with TanStack Start, deployed to Vercel.
 
-To run this application:
+**Routes:** `/` (home), `/gtp`, `/gaz`, `/remonti`, `/kontakti`
 
-```bash
-npm install
-npm run dev
-```
+## Prerequisites
 
-# Building For Production
+- Node 22 (see `.nvmrc`)
+- pnpm 10 (`corepack enable` if needed)
 
-To build this application for production:
+This project uses **pnpm only** — do not use npm or the removed `package-lock.json`.
 
-```bash
-npm run build
-```
-
-## Testing
-
-This project uses [Vitest](https://vitest.dev/) for testing. You can run the tests with:
+## Development
 
 ```bash
-npm run test
+pnpm install
+pnpm dev
 ```
 
-## Styling
+## Scripts
 
-This project uses [Tailwind CSS](https://tailwindcss.com/) for styling.
+| Script | Purpose |
+|--------|---------|
+| `pnpm dev` | Local dev server |
+| `pnpm build` | Production build (runs SEO file generation first) |
+| `pnpm preview` | Preview production build |
+| `pnpm test` | Unit tests (Vitest) |
+| `pnpm test:e2e` | E2e smoke tests (Playwright; run `pnpm exec playwright install` once) |
+| `pnpm lint` | ESLint |
+| `pnpm format` | Prettier + ESLint fix |
+| `pnpm generate-seo` | Regenerate `public/sitemap.xml` and `public/robots.txt` |
+| `pnpm compress-images` | Compress PNG/JPG assets in `public/images/` |
+| `pnpm generate-icons` | Regenerate favicon and PWA icons from `public/logo.png` |
 
-### Removing Tailwind CSS
+## Environment
 
-If you prefer not to use Tailwind CSS:
-
-1. Remove the demo pages in `src/routes/demo/`
-2. Replace the Tailwind import in `src/styles.css` with your own styles
-3. Remove `tailwindcss()` from the plugins array in `vite.config.ts`
-4. Uninstall the packages: `npm install @tailwindcss/vite tailwindcss -D`
-
-## Linting & Formatting
-
-
-This project uses [eslint](https://eslint.org/) and [prettier](https://prettier.io/) for linting and formatting. Eslint is configured using [tanstack/eslint-config](https://tanstack.com/config/latest/docs/eslint). The following scripts are available:
+Copy `.env.example` to `.env.local` for local development:
 
 ```bash
-npm run lint
-npm run format
-npm run check
+VITE_SITE_URL=https://stefi-gas.com
 ```
 
+Canonical URL drives sitemap, robots, Open Graph, and Twitter meta tags.
 
 ## Deploy to Vercel
-
-This project is configured for Vercel via TanStack Start + Nitro:
 
 | Setting | Value |
 |---------|-------|
 | Build command | `pnpm build` |
 | Framework | TanStack Start (auto-detected) |
-| Node version | 22 (from `.nvmrc`) |
-
-### Prerequisites
-
-- Node 22
-- pnpm 10 (`corepack enable` if needed)
+| Node version | 22 |
 
 ### Local verify before deploy
 
@@ -72,22 +58,14 @@ pnpm install
 pnpm lint && pnpm test && pnpm build
 ```
 
-### Vercel setup (client account)
+### Quick setup
 
-1. Push this repo to GitHub
-2. In the [Vercel dashboard](https://vercel.com/new), import the repository
-3. Confirm **Framework Preset: TanStack Start** (auto-detected from `vercel.json`)
-4. Open **Project Settings → Environment variables** and add:
+1. Import the repo in the [Vercel dashboard](https://vercel.com/new)
+2. Set `VITE_SITE_URL=https://stefi-gas.com` in Production environment variables
+3. Deploy, then add `stefi-gas.com` and configure `www` → apex redirect
+4. Run the post-deploy smoke checklist
 
-| Variable | Required | Environments | Example | Purpose |
-|----------|----------|--------------|---------|---------|
-| `VITE_SITE_URL` | Yes | Production | `https://stefi-gas.com` | Canonical URL, sitemap, robots, OG/Twitter meta |
-
-5. Deploy, then add custom domain `stefi-gas.com` in **Project Settings → Domains**
-6. Configure `www.stefi-gas.com` to redirect to `stefi-gas.com` (apex canonical)
-7. Apply DNS records at the domain registrar
-
-Until a custom domain is live, use the Vercel preview URL for smoke testing.
+Full step-by-step handoff runbook: **[docs/deploy-vercel.md](docs/deploy-vercel.md)**
 
 ### First deploy checklist
 
@@ -97,173 +75,17 @@ Until a custom domain is live, use the Vercel preview URL for smoke testing.
 - [ ] Page source: `canonical` and `og:url` match `VITE_SITE_URL`
 - [ ] Security headers present (`X-Frame-Options`, `X-Content-Type-Options`)
 
-### CI
+## CI
 
-GitHub Actions runs `pnpm lint`, `pnpm test`, and `pnpm build` on every push and pull request to `main`.
+GitHub Actions runs `pnpm lint`, `pnpm test`, `pnpm build`, and Playwright e2e smoke tests on every push and pull request to `main`.
 
-E2e tests (`pnpm test:e2e`) run locally only — they require Playwright browsers.
+For local e2e: `pnpm exec playwright install` once, then `pnpm test:e2e`.
 
-Server-side rendering runs on Vercel Functions via the Nitro Vite plugin.
+## Project structure
 
-
-## Shadcn
-
-Add components using the latest version of [Shadcn](https://ui.shadcn.com/).
-
-```bash
-pnpm dlx shadcn@latest add button
-```
-
-
-
-## Routing
-
-This project uses [TanStack Router](https://tanstack.com/router) with file-based routing. Routes are managed as files in `src/routes`.
-
-### Adding A Route
-
-To add a new route to your application just add a new file in the `./src/routes` directory.
-
-TanStack will automatically generate the content of the route file for you.
-
-Now that you have two routes you can use a `Link` component to navigate between them.
-
-### Adding Links
-
-To use SPA (Single Page Application) navigation you will need to import the `Link` component from `@tanstack/react-router`.
-
-```tsx
-import { Link } from "@tanstack/react-router";
-```
-
-Then anywhere in your JSX you can use it like so:
-
-```tsx
-<Link to="/about">About</Link>
-```
-
-This will create a link that will navigate to the `/about` route.
-
-More information on the `Link` component can be found in the [Link documentation](https://tanstack.com/router/v1/docs/framework/react/api/router/linkComponent).
-
-### Using A Layout
-
-In the File Based Routing setup the layout is located in `src/routes/__root.tsx`. Anything you add to the root route will appear in all the routes. The route content will appear in the JSX where you render `{children}` in the `shellComponent`.
-
-Here is an example layout that includes a header:
-
-```tsx
-import { HeadContent, Scripts, createRootRoute } from '@tanstack/react-router'
-
-export const Route = createRootRoute({
-  head: () => ({
-    meta: [
-      { charSet: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { title: 'My App' },
-    ],
-  }),
-  shellComponent: ({ children }) => (
-    <html lang="en">
-      <head>
-        <HeadContent />
-      </head>
-      <body>
-        <header>
-          <nav>
-            <Link to="/">Home</Link>
-            <Link to="/about">About</Link>
-          </nav>
-        </header>
-        {children}
-        <Scripts />
-      </body>
-    </html>
-  ),
-})
-```
-
-More information on layouts can be found in the [Layouts documentation](https://tanstack.com/router/latest/docs/framework/react/guide/routing-concepts#layouts).
-
-## Server Functions
-
-TanStack Start provides server functions that allow you to write server-side code that seamlessly integrates with your client components.
-
-```tsx
-import { createServerFn } from '@tanstack/react-start'
-
-const getServerTime = createServerFn({
-  method: 'GET',
-}).handler(async () => {
-  return new Date().toISOString()
-})
-
-// Use in a component
-function MyComponent() {
-  const [time, setTime] = useState('')
-  
-  useEffect(() => {
-    getServerTime().then(setTime)
-  }, [])
-  
-  return <div>Server time: {time}</div>
-}
-```
-
-## API Routes
-
-You can create API routes by using the `server` property in your route definitions:
-
-```tsx
-import { createFileRoute } from '@tanstack/react-router'
-import { json } from '@tanstack/react-start'
-
-export const Route = createFileRoute('/api/hello')({
-  server: {
-    handlers: {
-      GET: () => json({ message: 'Hello, World!' }),
-    },
-  },
-})
-```
-
-## Data Fetching
-
-There are multiple ways to fetch data in your application. You can use TanStack Query to fetch data from a server. But you can also use the `loader` functionality built into TanStack Router to load the data for a route before it's rendered.
-
-For example:
-
-```tsx
-import { createFileRoute } from '@tanstack/react-router'
-
-export const Route = createFileRoute('/people')({
-  loader: async () => {
-    const response = await fetch('https://swapi.dev/api/people')
-    return response.json()
-  },
-  component: PeopleComponent,
-})
-
-function PeopleComponent() {
-  const data = Route.useLoaderData()
-  return (
-    <ul>
-      {data.results.map((person) => (
-        <li key={person.name}>{person.name}</li>
-      ))}
-    </ul>
-  )
-}
-```
-
-Loaders simplify your data fetching logic dramatically. Check out more information in the [Loader documentation](https://tanstack.com/router/latest/docs/framework/react/guide/data-loading#loader-parameters).
-
-# Demo files
-
-Files prefixed with `demo` can be safely deleted. They are there to provide a starting point for you to play around with the features you've installed.
-
-# Learn More
-
-You can learn more about all of the offerings from TanStack in the [TanStack documentation](https://tanstack.com).
-
-For TanStack Start specific documentation, visit [TanStack Start](https://tanstack.com/start).
+- `src/routes/` — file-based routes (TanStack Router)
+- `src/data/site-content.ts` — page copy and contact info
+- `src/data/services-catalog.ts` — service listings
+- `src/lib/seo.ts` — meta tags and JSON-LD helpers
+- `scripts/generate-seo-files.mjs` — sitemap/robots generation at build
+- `public/images/` — static images

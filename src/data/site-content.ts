@@ -1,10 +1,12 @@
 import { remontiGroups } from '#/data/services-catalog'
-import { buildPhoneHref, buildViberHref } from '#/lib/contact-links'
+import { buildPhoneHref, buildViberHref } from '#/lib/contact-hrefs'
 import { getSiteUrl } from '#/lib/site-url'
 
 export type SitePath = '/' | '/gtp' | '/gaz' | '/remonti' | '/kontakti'
 
 export type ServicePage = 'gtp' | 'gaz' | 'remonti'
+
+export type PageKey = 'home' | 'gtp' | 'gaz' | 'remonti' | 'kontakti'
 
 export type Service = {
   id: string
@@ -102,6 +104,21 @@ export type PageContent = {
   ctaBand: PageCta
 }
 
+export type ServicePageLayout =
+  | { kind: 'static-splits'; detailsCatalogHeading: string }
+  | { kind: 'service-splits'; detailsCatalogHeading: string }
+  | { kind: 'group-splits'; detailsCatalogHeading: string }
+
+export type PageRegistryEntry = {
+  key: PageKey
+  path: SitePath
+  contactContext: ContactContext
+  seo: SeoEntry
+  content: PageContent
+  servicePage?: ServicePage
+  serviceLayout?: ServicePageLayout
+}
+
 export const imageAlts = {
   shop: 'Автосервиз в Ловеч — работилница',
   gtp: 'Годишен технически преглед в автосервиз',
@@ -190,143 +207,217 @@ const homeServiceCards = [
   },
 ] satisfies ServiceCard[]
 
-const gtp = {
-  title: 'Годишен технически преглед',
-  description:
-    'Трябва ви годишен технически преглед в Ловеч? Запишете час по телефона — ще ви кажем какво да очаквате.',
-  steps: [
-    'Обадете се и уточнете удобен час.',
-    'Дойдете при нас в Ловеч.',
-    'Минавате прегледа и си тръгвате с всичко необходимо.',
-  ],
-}
-
-const repairs = {
-  title: 'Ремонти и поддръжка',
-  description:
-    'Ремонтираме и поддържаме коли всеки ден — от диагностика до спирачки и ходова част. Обадете се и опишете проблема.',
-  groups: remontiGroups,
-}
-
-const contacts = {
-  title: 'Контакти',
-  description:
-    'Намерете ни в Ловеч, вижте кога сме отворени и се обадете с един клик.',
-}
-
 const sharedCtaBand = {
   title: 'Свържете се с нас за преглед или ремонт',
   description:
     'Най-лесно е да се обадите — ще ви запишем за преглед или ремонт и ще отговорим на въпросите ви.',
 } satisfies PageCta
 
-const pages = {
+const seoEntries = {
   home: {
-    hero: homeHero,
-    sections: [
-      {
-        title: homeServiceCards[0].title,
-        description: homeServiceCards[0].description,
-        image: '/images/gtp-section.png',
-        imageAlt: imageAlts.gtp,
-      },
-      {
-        title: homeServiceCards[1].title,
-        description: homeServiceCards[1].description,
-        image: '/images/repairs-section.png',
-        imageAlt: imageAlts.repairs,
-      },
-      {
-        title: homeServiceCards[2].title,
-        description: homeServiceCards[2].description,
-        image: '/images/repairs-section.png',
-        imageAlt: imageAlts.gas,
-      },
-    ] satisfies SplitSectionContent[],
-    stats: [
-      { value: 'ГТП', label: 'Годишен технически преглед', icon: 'clipboard-check' },
-      { value: 'Пн–Пт', label: '9:00–18:00', icon: 'calendar-days' },
-      { value: 'LPG/CNG', label: 'Монтаж и сервиз на газ', icon: 'fuel' },
-    ] satisfies StatItem[],
-    ctaBand: sharedCtaBand,
+    title: 'Начало',
+    description:
+      'ГТП, автосервиз и газови системи в Ловеч — Stefi Auto Gas. Запишете час по телефона.',
   },
   gtp: {
-    hero: {
-      title: gtp.title,
-      description: gtp.description,
-      image: '/images/gtp-section.png',
-      imageAlt: imageAlts.gtp,
-      primaryCtaLabel: 'Обадете се',
-    },
-    sections: [
-      {
-        title: 'Как протича прегледът',
-        description:
-          'Обаждате се, уточняваме удобен час, минавате прегледа при нас и си тръгвате с всичко необходимо.',
-        image: '/images/gtp-section.png',
-        imageAlt: imageAlts.gtp,
-      },
-      {
-        title: 'Какво получавате',
-        description:
-          'Бързо записване, преглед на място и ясен отговор — без да обикаляте излишно.',
-        image: '/images/trust-section.png',
-        imageAlt: imageAlts.shop,
-      },
-    ] satisfies SplitSectionContent[],
-    ctaBand: sharedCtaBand,
+    title: 'ГТП',
+    description: 'Годишен технически преглед в Ловеч — Stefi Auto Gas. Обадете се за час.',
   },
   gaz: {
-    hero: {
-      title: 'Газови системи',
-      description:
-        'Монтаж, ремонт и преглед на LPG/CNG газови уредби в Ловеч. Обадете се на линията за газови системи и ще ви насочим.',
-      image: '/images/repairs-section.png',
-      imageAlt: imageAlts.gas,
-      primaryCtaLabel: 'Обадете се',
-    },
-    sections: [] satisfies SplitSectionContent[],
-    ctaBand: {
-      title: 'Обадете се за газови системи',
-      description:
-        'Монтаж, ремонт или преглед на LPG/CNG — направете едно обаждане на линията за газови системи.',
-    },
+    title: 'Газови системи',
+    description:
+      'Монтаж, ремонт и първоначален преглед на LPG/CNG газови уредби в Ловеч — Stefi Auto Gas.',
   },
   remonti: {
-    hero: {
-      title: repairs.title,
-      description: repairs.description,
-      image: '/images/repairs-section.png',
-      imageAlt: imageAlts.repairs,
-      primaryCtaLabel: 'Обадете се',
-    },
-    sections: [] satisfies SplitSectionContent[],
-    ctaBand: sharedCtaBand,
+    title: 'Ремонти',
+    description: 'Ремонти и поддръжка на автомобили в Ловеч — Stefi Auto Gas.',
   },
   kontakti: {
-    hero: {
-      title: contacts.title,
-      description: contacts.description,
-      image: '/images/hero.jpg',
-      imageAlt: imageAlts.shop,
+    title: 'Контакти',
+    description: 'Контакти, адрес и работно време на Stefi Auto Gas в Ловеч.',
+  },
+} satisfies Record<PageKey, SeoEntry>
+
+export const pageRegistry = {
+  '/': {
+    key: 'home',
+    path: '/',
+    contactContext: 'default',
+    seo: seoEntries.home,
+    content: {
+      hero: homeHero,
+      sections: [
+        {
+          title: homeServiceCards[0].title,
+          description: homeServiceCards[0].description,
+          image: '/images/gtp-section.png',
+          imageAlt: imageAlts.gtp,
+        },
+        {
+          title: homeServiceCards[1].title,
+          description: homeServiceCards[1].description,
+          image: '/images/repairs-section.png',
+          imageAlt: imageAlts.repairs,
+        },
+        {
+          title: homeServiceCards[2].title,
+          description: homeServiceCards[2].description,
+          image: '/images/repairs-section.png',
+          imageAlt: imageAlts.gas,
+        },
+      ] satisfies SplitSectionContent[],
+      stats: [
+        { value: 'ГТП', label: 'Годишен технически преглед', icon: 'clipboard-check' },
+        { value: 'Пн–Пт', label: '9:00–18:00', icon: 'calendar-days' },
+        { value: 'LPG/CNG', label: 'Монтаж и сервиз на газ', icon: 'fuel' },
+      ] satisfies StatItem[],
+      ctaBand: sharedCtaBand,
     },
-    sections: [
-      {
-        title: 'Адрес и работно време',
-        description: `${contact.address}. ${contact.hours.join('. ')}.`,
-        image: '/images/trust-section.png',
+  },
+  '/gtp': {
+    key: 'gtp',
+    path: '/gtp',
+    contactContext: 'gtp',
+    seo: seoEntries.gtp,
+    servicePage: 'gtp',
+    serviceLayout: {
+      kind: 'static-splits',
+      detailsCatalogHeading: 'Годишен технически преглед — подробности',
+    },
+    content: {
+      hero: {
+        title: 'Годишен технически преглед',
+        description:
+          'Трябва ви годишен технически преглед в Ловеч? Запишете час по телефона — ще ви кажем какво да очаквате.',
+        image: '/images/gtp-section.png',
+        imageAlt: imageAlts.gtp,
+        primaryCtaLabel: 'Обадете се',
+      },
+      sections: [
+        {
+          title: 'Как протича прегледът',
+          description:
+            'Обаждате се, уточняваме удобен час, минавате прегледа при нас и си тръгвате с всичко необходимо.',
+          image: '/images/gtp-section.png',
+          imageAlt: imageAlts.gtp,
+        },
+        {
+          title: 'Какво получавате',
+          description:
+            'Бързо записване, преглед на място и ясен отговор — без да обикаляте излишно.',
+          image: '/images/trust-section.png',
+          imageAlt: imageAlts.shop,
+        },
+      ] satisfies SplitSectionContent[],
+      ctaBand: sharedCtaBand,
+    },
+  },
+  '/gaz': {
+    key: 'gaz',
+    path: '/gaz',
+    contactContext: 'gaz',
+    seo: seoEntries.gaz,
+    servicePage: 'gaz',
+    serviceLayout: {
+      kind: 'service-splits',
+      detailsCatalogHeading: 'Газови услуги — подробности',
+    },
+    content: {
+      hero: {
+        title: 'Газови системи',
+        description:
+          'Монтаж, ремонт и преглед на LPG/CNG газови уредби в Ловеч. Обадете се на линията за газови системи и ще ви насочим.',
+        image: '/images/repairs-section.png',
+        imageAlt: imageAlts.gas,
+        primaryCtaLabel: 'Обадете се',
+      },
+      sections: [] satisfies SplitSectionContent[],
+      ctaBand: {
+        title: 'Обадете се за газови системи',
+        description:
+          'Монтаж, ремонт или преглед на LPG/CNG — направете едно обаждане на линията за газови системи.',
+      },
+    },
+  },
+  '/remonti': {
+    key: 'remonti',
+    path: '/remonti',
+    contactContext: 'remonti',
+    seo: seoEntries.remonti,
+    servicePage: 'remonti',
+    serviceLayout: {
+      kind: 'group-splits',
+      detailsCatalogHeading: 'Ремонти — подробности',
+    },
+    content: {
+      hero: {
+        title: 'Ремонти и поддръжка',
+        description:
+          'Ремонтираме и поддържаме коли всеки ден — от диагностика до спирачки и ходова част. Обадете се и опишете проблема.',
+        image: '/images/repairs-section.png',
+        imageAlt: imageAlts.repairs,
+        primaryCtaLabel: 'Обадете се',
+      },
+      sections: [] satisfies SplitSectionContent[],
+      ctaBand: sharedCtaBand,
+    },
+  },
+  '/kontakti': {
+    key: 'kontakti',
+    path: '/kontakti',
+    contactContext: 'default',
+    seo: seoEntries.kontakti,
+    content: {
+      hero: {
+        title: 'Контакти',
+        description:
+          'Намерете ни в Ловеч, вижте кога сме отворени и се обадете с един клик.',
+        image: '/images/hero.jpg',
         imageAlt: imageAlts.shop,
       },
-    ] satisfies SplitSectionContent[],
-    ctaBand: sharedCtaBand,
+      sections: [
+        {
+          title: 'Адрес и работно време',
+          description: `${contact.address}. ${contact.hours.join('. ')}.`,
+          image: '/images/trust-section.png',
+          imageAlt: imageAlts.shop,
+        },
+      ] satisfies SplitSectionContent[],
+      ctaBand: sharedCtaBand,
+    },
   },
-} satisfies Record<'home' | 'gtp' | 'gaz' | 'remonti' | 'kontakti', PageContent>
+} satisfies Record<SitePath, PageRegistryEntry>
+
+export function getPageEntry(path: SitePath): PageRegistryEntry {
+  return pageRegistry[path]
+}
+
+export function getServicePageEntry(page: ServicePage): PageRegistryEntry & {
+  servicePage: ServicePage
+  serviceLayout: ServicePageLayout
+} {
+  const entry = Object.values(pageRegistry).find((item) => item.servicePage === page)
+  if (!entry?.servicePage || !entry.serviceLayout) {
+    throw new Error(`Missing service page registry entry for ${page}`)
+  }
+  return {
+    ...entry,
+    servicePage: entry.servicePage,
+    serviceLayout: entry.serviceLayout,
+  }
+}
+
+/** @deprecated Use pageRegistry[path].content */
+export const pages = Object.fromEntries(
+  Object.values(pageRegistry).map((entry) => [entry.key, entry.content]),
+) as Record<PageKey, PageContent>
 
 export const siteContent = {
   locale: 'bg-BG',
   city: 'Ловеч',
   siteUrl: getSiteUrl(),
   brandName: 'Stefi Auto Gas',
+  logoSrc: '/logo.png',
   footer: {
     tagline: 'ГТП, сервиз и газови системи в Ловеч',
     contactHeading: 'Адрес',
@@ -339,38 +430,13 @@ export const siteContent = {
     { to: '/kontakti', label: 'Контакти' },
   ] satisfies NavigationItem[],
   contact,
+  pageRegistry,
   pages,
   home: {
     hero: homeHero,
     serviceCards: homeServiceCards,
   },
-  gtp,
-  repairs,
-  contacts,
-  seo: {
-    home: {
-      title: 'Начало',
-      description:
-        'ГТП, автосервиз и газови системи в Ловеч — Stefi Auto Gas. Запишете час по телефона.',
-    },
-    gtp: {
-      title: 'ГТП',
-      description: 'Годишен технически преглед в Ловеч — Stefi Auto Gas. Обадете се за час.',
-    },
-    gaz: {
-      title: 'Газови системи',
-      description:
-        'Монтаж, ремонт и първоначален преглед на LPG/CNG газови уредби в Ловеч — Stefi Auto Gas.',
-    },
-    repairs: {
-      title: 'Ремонти',
-      description: 'Ремонти и поддръжка на автомобили в Ловеч — Stefi Auto Gas.',
-    },
-    contacts: {
-      title: 'Контакти',
-      description: 'Контакти, адрес и работно време на Stefi Auto Gas в Ловеч.',
-    },
-  } satisfies Record<'home' | 'gtp' | 'gaz' | 'repairs' | 'contacts', SeoEntry>,
+  seo: seoEntries,
 } as const
 
 export { servicesCatalog, remontiGroups } from '#/data/services-catalog'

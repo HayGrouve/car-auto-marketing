@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { servicesCatalog, remontiGroups } from '#/data/services-catalog'
-import { buildPhoneHref, buildViberHref } from '#/lib/contact-links'
+import { buildPhoneHref, buildViberHref } from '#/lib/contact-hrefs'
 import { siteContent } from '#/data/site-content'
 
 describe('siteContent', () => {

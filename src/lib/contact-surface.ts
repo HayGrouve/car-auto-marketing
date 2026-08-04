@@ -1,5 +1,10 @@
 import type { ContactContext, ContactLine, ContactLineId } from '#/data/site-content'
 import { siteContent } from '#/data/site-content'
+import { buildPhoneHref, buildViberHref } from '#/lib/contact-hrefs'
+
+export { buildPhoneHref, buildViberHref } from '#/lib/contact-hrefs'
+
+export const COMPACT_VIBER_LABEL = 'Пишете ни във Viber'
 
 const LINE_ORDER: ContactLineId[] = ['service', 'inspections', 'gas']
 
@@ -21,7 +26,7 @@ export function resolveContactLine(context: ContactContext = 'default'): Contact
       return findLineById('inspections')
     case 'remonti':
       return findLineById('service')
-    case 'gas':
+    case 'gaz':
       return findLineById('gas')
     case 'default':
       return getDefaultContactLine()
@@ -34,4 +39,12 @@ export function resolveContactLine(context: ContactContext = 'default'): Contact
 
 export function getAllContactLines(): readonly ContactLine[] {
   return LINE_ORDER.map((id) => findLineById(id))
+}
+
+export function contactPhoneLabel(line: ContactLine): string {
+  return line.phoneDisplay
+}
+
+export function contactViberLabel(line: ContactLine, compact = false): string {
+  return compact ? COMPACT_VIBER_LABEL : line.viberLabel
 }
