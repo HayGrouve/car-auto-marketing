@@ -167,7 +167,7 @@ const homeHero = {
   title: 'ГТП, сервиз и газови системи в Ловеч',
   description:
     'Годишен преглед, ремонти и газови системи — на едно място в Ловеч. Обадете се и ще ви кажем кога да дойдете.',
-  image: '/images/lovech-service-shop.png',
+  image: '/images/hero.jpg',
   imageAlt: imageAlts.shop,
   primaryCtaLabel: 'Обадете се',
 } satisfies HeroContent
@@ -307,7 +307,7 @@ const pages = {
     hero: {
       title: contacts.title,
       description: contacts.description,
-      image: '/images/lovech-service-shop.png',
+      image: '/images/hero.jpg',
       imageAlt: imageAlts.shop,
     },
     sections: [

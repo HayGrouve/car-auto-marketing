@@ -12,7 +12,7 @@ describe('buildSeoHead', () => {
     })
 
     expect(seo.title).toBe('ГТП | Stefi Auto Gas')
-    expect(seo.canonical).toBe('https://avtoserviz-lovech.bg/gtp')
+    expect(seo.canonical).toBe('https://stefi-gas.com/gtp')
     expect(
       seo.meta.some(
         (item) =>
@@ -26,7 +26,7 @@ describe('buildSeoHead', () => {
         (item) =>
           'property' in item &&
           item.property === 'og:image' &&
-          item.content.includes('/images/lovech-service-shop.png'),
+          item.content.includes('/images/hero.jpg'),
       ),
     ).toBe(true)
     expect(
@@ -62,7 +62,7 @@ describe('buildLocalBusinessJsonLd', () => {
       contactType: 'customer service',
       description: 'Сервиз',
     })
-    expect(jsonLd.image).toContain('/images/lovech-service-shop.png')
+    expect(jsonLd.image).toContain('/images/hero.jpg')
     expect(jsonLd.address).toMatchObject({
       '@type': 'PostalAddress',
       streetAddress: siteContent.contact.address,

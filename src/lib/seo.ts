@@ -8,7 +8,7 @@ type BuildSeoHeadArgs = {
   path: SitePath
 }
 
-export const defaultOgImage = `${siteContent.siteUrl}/images/lovech-service-shop.png`
+export const defaultOgImage = `${siteContent.siteUrl}/images/hero.jpg`
 
 export function buildSeoHead({
   title,

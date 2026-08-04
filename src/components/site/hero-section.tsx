@@ -52,7 +52,7 @@ export function HeroSection({
       {content.image ? (
         <img
           alt={content.imageAlt ?? ''}
-          className="hero-image-scale-in absolute inset-0 h-full w-full object-cover"
+          className="hero-image-scale-in absolute inset-0 h-full w-full object-cover brightness-[1.02] contrast-[1.05] saturate-[1.03]"
           decoding="async"
           fetchPriority="high"
           src={content.image}
@@ -60,7 +60,7 @@ export function HeroSection({
       ) : null}
       <div
         aria-hidden
-        className="absolute inset-0 bg-gradient-to-r from-white via-white/95 to-white/20"
+        className="absolute inset-0 bg-gradient-to-r from-white from-0% via-white/82 via-46% to-white/5 to-75%"
       />
       <div className="relative flex min-h-[340px] items-center px-6 py-12 md:min-h-[420px] lg:px-10">
         <div className="max-w-xl space-y-5">

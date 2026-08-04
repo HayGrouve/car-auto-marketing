@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      VITE_SITE_URL: https://avtoserviz-lovech.bg
+      VITE_SITE_URL: https://stefi-gas.com
 
     steps:
       - name: Checkout

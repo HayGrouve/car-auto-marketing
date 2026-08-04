@@ -50,14 +50,14 @@ npm run check
 ```
 
 
-## Deploy to Netlify
+## Deploy to Vercel
 
-This project ships with `netlify.toml` configured for Netlify:
+This project is configured for Vercel via TanStack Start + Nitro:
 
 | Setting | Value |
 |---------|-------|
 | Build command | `pnpm build` |
-| Publish directory | `dist/client` |
+| Framework | TanStack Start (auto-detected) |
 | Node version | 22 (from `.nvmrc`) |
 
 ### Prerequisites
@@ -72,27 +72,30 @@ pnpm install
 pnpm lint && pnpm test && pnpm build
 ```
 
-### Netlify setup
+### Vercel setup (client account)
 
 1. Push this repo to GitHub
-2. Visit https://app.netlify.com/start and import the repo
-3. Confirm Netlify reads build settings from `netlify.toml` (`pnpm build` → `dist/client`)
-4. Open **Site settings → Environment variables** and add:
+2. In the [Vercel dashboard](https://vercel.com/new), import the repository
+3. Confirm **Framework Preset: TanStack Start** (auto-detected from `vercel.json`)
+4. Open **Project Settings → Environment variables** and add:
 
-| Variable | Required | Example | Purpose |
-|----------|----------|---------|---------|
-| `VITE_SITE_URL` | Yes (Production) | `https://avtoserviz-lovech.bg` | Canonical URL, sitemap, robots, OG/Twitter meta |
+| Variable | Required | Environments | Example | Purpose |
+|----------|----------|--------------|---------|---------|
+| `VITE_SITE_URL` | Yes | Production | `https://stefi-gas.com` | Canonical URL, sitemap, robots, OG/Twitter meta |
 
-Until a custom domain is live, use your Netlify subdomain (e.g. `https://your-site.netlify.app`).
+5. Deploy, then add custom domain `stefi-gas.com` in **Project Settings → Domains**
+6. Configure `www.stefi-gas.com` to redirect to `stefi-gas.com` (apex canonical)
+7. Apply DNS records at the domain registrar
 
-5. Trigger the first deploy
+Until a custom domain is live, use the Vercel preview URL for smoke testing.
 
 ### First deploy checklist
 
-- [ ] Netlify build succeeds
+- [ ] Vercel build succeeds
 - [ ] Homepage loads
-- [ ] `/sitemap.xml` and `/robots.txt` use your `VITE_SITE_URL` domain
+- [ ] `/sitemap.xml` and `/robots.txt` use `stefi-gas.com`
 - [ ] Page source: `canonical` and `og:url` match `VITE_SITE_URL`
+- [ ] Security headers present (`X-Frame-Options`, `X-Content-Type-Options`)
 
 ### CI
 
@@ -100,7 +103,7 @@ GitHub Actions runs `pnpm lint`, `pnpm test`, and `pnpm build` on every push and
 
 E2e tests (`pnpm test:e2e`) run locally only — they require Playwright browsers.
 
-Server-side rendering runs on Netlify Functions via `@netlify/vite-plugin-tanstack-start`.
+Server-side rendering runs on Vercel Functions via the Nitro Vite plugin.
 
 
 ## Shadcn

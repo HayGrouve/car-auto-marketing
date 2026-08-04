@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://avtoserviz-lovech.bg/sitemap.xml
+Sitemap: https://stefi-gas.com/sitemap.xml
