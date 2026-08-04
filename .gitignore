@@ -23,3 +23,9 @@ test-results/
 playwright-report/
 
 .superpowers
+
+# Developer-only — exclude from client handoff
+.scratch/
+.agents/
+.cta.json
+.cursor/
