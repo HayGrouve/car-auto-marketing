@@ -27,5 +27,6 @@ playwright-report/
 # Developer-only — exclude from client handoff
 .scratch/
 .agents/
+docs/superpowers/
 .cta.json
 .cursor/
