@@ -9,25 +9,15 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as RemontiRouteImport } from './routes/remonti'
-import { Route as KontaktiRouteImport } from './routes/kontakti'
-import { Route as GtpRouteImport } from './routes/gtp'
-import { Route as GazRouteImport } from './routes/gaz'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as GazRouteImport } from './routes/gaz'
+import { Route as GtpRouteImport } from './routes/gtp'
+import { Route as KontaktiRouteImport } from './routes/kontakti'
+import { Route as RemontiRouteImport } from './routes/remonti'
 
-const RemontiRoute = RemontiRouteImport.update({
-  id: '/remonti',
-  path: '/remonti',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const KontaktiRoute = KontaktiRouteImport.update({
-  id: '/kontakti',
-  path: '/kontakti',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const GtpRoute = GtpRouteImport.update({
-  id: '/gtp',
-  path: '/gtp',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const GazRoute = GazRouteImport.update({
@@ -35,9 +25,19 @@ const GazRoute = GazRouteImport.update({
   path: '/gaz',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const GtpRoute = GtpRouteImport.update({
+  id: '/gtp',
+  path: '/gtp',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KontaktiRoute = KontaktiRouteImport.update({
+  id: '/kontakti',
+  path: '/kontakti',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RemontiRoute = RemontiRouteImport.update({
+  id: '/remonti',
+  path: '/remonti',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -81,25 +81,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/remonti': {
-      id: '/remonti'
-      path: '/remonti'
-      fullPath: '/remonti'
-      preLoaderRoute: typeof RemontiRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/kontakti': {
-      id: '/kontakti'
-      path: '/kontakti'
-      fullPath: '/kontakti'
-      preLoaderRoute: typeof KontaktiRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/gtp': {
-      id: '/gtp'
-      path: '/gtp'
-      fullPath: '/gtp'
-      preLoaderRoute: typeof GtpRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/gaz': {
@@ -109,11 +95,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GazRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/gtp': {
+      id: '/gtp'
+      path: '/gtp'
+      fullPath: '/gtp'
+      preLoaderRoute: typeof GtpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/kontakti': {
+      id: '/kontakti'
+      path: '/kontakti'
+      fullPath: '/kontakti'
+      preLoaderRoute: typeof KontaktiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/remonti': {
+      id: '/remonti'
+      path: '/remonti'
+      fullPath: '/remonti'
+      preLoaderRoute: typeof RemontiRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
